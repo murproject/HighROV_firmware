@@ -72,12 +72,9 @@ namespace rov {
 			i += sizeof(axisZ);
 			memcpy(&axisW, msg + i, sizeof(axisW));
 			i += sizeof(axisW);
-			memcpy(&desiredDepth, msg + i, sizeof(desiredDepth));
-			i += sizeof(desiredDepth);
-			memcpy(&cameraRotation[0], msg + i, sizeof(cameraRotation[0]));
-			i += sizeof(cameraRotation[0]);
-			memcpy(&cameraRotation[1], msg + i, sizeof(cameraRotation[1]));
-			i += sizeof(cameraRotation[1]);
+
+			memcpy(&debugFlag, msg + i, sizeof(debugFlag));
+			i += sizeof(debugFlag);
 
 			memcpy(&thrusterPower[0], msg + i, sizeof(thrusterPower[0]));
 			i += sizeof(thrusterPower[0]);
@@ -92,16 +89,21 @@ namespace rov {
 			memcpy(&thrusterPower[5], msg + i, sizeof(thrusterPower[5]));
 			i += sizeof(thrusterPower[5]);
 
-			memcpy(&debugFlag, msg + i, sizeof(debugFlag));
-			i += sizeof(debugFlag);
-
 			memcpy(&manipulatorRotation, msg + i, sizeof(manipulatorRotation));
 			i += sizeof(manipulatorRotation);
+
+			memcpy(&cameraRotation[0], msg + i, sizeof(cameraRotation[0]));
+			i += sizeof(cameraRotation[0]);
+			memcpy(&cameraRotation[1], msg + i, sizeof(cameraRotation[1]));
+			i += sizeof(cameraRotation[1]);
+
 			memcpy(&manipulatorOpenClose, msg + i, sizeof(manipulatorOpenClose));
 			i += sizeof(manipulatorOpenClose);
 
 			memcpy(&regulators, msg + i, sizeof(regulators));
 			i += sizeof(regulators);
+			memcpy(&desiredDepth, msg + i, sizeof(desiredDepth));
+			i += sizeof(desiredDepth);
 			
 			uint16_t crc = 0;
 			memcpy(&crc, msg + i, sizeof(crc));
