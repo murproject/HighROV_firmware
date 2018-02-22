@@ -27,6 +27,7 @@ void ThrusterControlSystem::update(const RovDataStore & store_) {
 
 	if (store_.getControl().debugFlag) {
 		debug_thruster(store_.getControl());
+		return;
 	}
 
 	static AutoDepthRegulator adreg;
