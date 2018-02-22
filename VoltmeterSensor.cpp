@@ -6,7 +6,7 @@ namespace rov {
 
 VoltmeterSensor::VoltmeterSensor() :
 		m_pin(CurrentConfig::VOLTMETER_PIN), m_voltage(0)
-	{
+{
 
 
 }
@@ -16,17 +16,17 @@ VoltmeterSensor::~VoltmeterSensor(){
 }
 
 void VoltmeterSensor::init() {
-
+	
 }
 
 void VoltmeterSensor::update() {
 
-		m_voltage = analogRead(m_pin);
+	m_voltage = analogRead(m_pin);
 }
 
 void VoltmeterSensor::commit(RovTelimetry & tel_) {
 
-		//Serial.print("voltage: "); Serial.println(m_voltage);
+	tel_.voltmeter = m_voltage;
 }
 
 
