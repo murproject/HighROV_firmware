@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <math.h>
 #include <limits.h>
+
 namespace rov {
 
 #define VERTICAL_THRUSTER_SIZE 2
