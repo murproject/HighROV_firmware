@@ -216,3 +216,5 @@ pip-log.txt
 .mr.developer.cfg
 __vm\*
 Debug/*
+*.xml
+__vm/Upload.vmps.xml
