@@ -18,144 +18,72 @@
     <None Include="rov_firmware.ino" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="__vm\.rov_firmware.vsarduino.h">
+    <ClInclude Include="__vm\.HighROV_firmware.vsarduino.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WiFiUpdater.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HighROV.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PWMController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Networking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Crc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RovDataTypes.h">
+    <ClInclude Include="Thrusters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UdpConnection.h">
+    <ClInclude Include="RotaryCameras.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IMUSensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MotorBase.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Thruster.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThrusterControlSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Regulator.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RovMagics.h">
+    <ClInclude Include="Manipulator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="DepthSensor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Rov.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="SensorsContainer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RovDataStore.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Sensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AllSensors.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MS5837.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VoltmeterSensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AmpermeterSensor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PayloadSystem.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PayloadTool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ManipulatorPayload.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Motor.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="AllPayload.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="RotaryCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="WiFiUpdater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HighROV.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PWMController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Networking.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Crc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RovDataTypes.cpp">
+    <ClCompile Include="Thrusters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UdpConnection.cpp">
+    <ClCompile Include="RotaryCameras.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="IMUSensor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MotorBase.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Thruster.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ThrusterControlSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Regulator.cpp">
+    <ClCompile Include="Manipulator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="DepthSensor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Rov.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SensorsContainer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RovDataStore.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Sensor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MS5837.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VoltmeterSensor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="AmpermeterSensor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PayloadSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PayloadTool.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ManipulatorPayload.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Motor.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="RotaryCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

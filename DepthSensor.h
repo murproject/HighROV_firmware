@@ -1,18 +1,15 @@
 #pragma once
-#include "Sensor.h"
-#include "MS5837.h"
-namespace rov {
-	class DepthSensor : public Sensor
-	{
-	public:
-		DepthSensor();
-		~DepthSensor();
-		void init();
-		void update();
-		void commit(RovTelimetry &tel_);
-		float getDepth() const;
-	private:
-		rovlibs::MS5837 m_sensor;
-	};
 
-}
+#include <MS5837.h>
+class DepthSensor
+{
+public:
+    static void init();
+    static float get_depth();
+private:
+    static DepthSensor &inst();
+    MS5837 sensor;
+    long long time_update = 0;
+    float depth = 0;
+};
+

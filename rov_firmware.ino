@@ -1,4 +1,4 @@
-#define SERIAL_RX_BUFFER_SIZE 256
+
 /*
  Name:		rov_firmware.ino
  Created:	15.01.2018 14:16:59
@@ -7,18 +7,19 @@
 
 
 #include <Arduino.h>
-#include "Rov.h"
+#include <Wire.h>
+#include "HighROV.h"
 
-rov::Rov robot;
-
-void setup() {
-	
-	Serial.begin(115200);
-	robot.init();
+void setup() {  
+    
+    //delay(500);
+    Wire.begin();
+    //Wire.setClock(100000);
+    delay(100);
+    Serial.begin(115200);
+    HighROV::init();
 }
 
 void loop() {
-	robot.run();
+    HighROV::run();
 }
-
-
