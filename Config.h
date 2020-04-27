@@ -24,9 +24,9 @@ namespace config {
     }
 
     namespace networking {
-        constexpr uint8_t selfip[4] = {192, 168, 1, 4};
+        constexpr uint8_t selfip[4] = {192, 168, 1, 5};
         constexpr uint16_t self_port = 3020;
-        constexpr uint8_t remoteip[4] = {192, 168, 1, 3};
+        constexpr uint8_t remoteip[4] = {192, 168, 1, 4};
         constexpr uint16_t remote_port = 3010;
     }
 }
