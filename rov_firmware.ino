@@ -10,8 +10,7 @@
 #include <Wire.h>
 #include "HighROV.h"
 
-void setup() {  
-    
+void setup() {
     //delay(500);
     Wire.begin();
     //Wire.setClock(100000);

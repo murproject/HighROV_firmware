@@ -15,7 +15,7 @@ rov::RovTelimetry telimetry;
 
 void HighROV::init() {
     Serial.println("HighROV init");
-    //WiFiUpdater::init();
+    WiFiUpdater::init();
     PWMController::init();
     Networking::init();
     Thrusters::init();
@@ -37,8 +37,8 @@ void debug(rov::RovControl &ctrl) {
 }
 
 
-void HighROV::run() {
-    //WiFiUpdater::check_updates();
+void HighROV::run() {  
+    WiFiUpdater::check_updates();
     Networking::read_write_udp(telimetry, control);
     if (!control.debugFlag) {
         Thrusters::update_thrusters(control, telimetry);

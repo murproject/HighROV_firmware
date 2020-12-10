@@ -3,8 +3,8 @@
 
 namespace config {
     namespace wifi {
-        constexpr char ssid[] = "LOL";
-        constexpr char pass[] = "12345678";
+        constexpr char ssid[] = "HighROV";
+        constexpr char pass[] = "robocenter";
         constexpr char pass_for_update[] = "1";
     }
     namespace pwm {
