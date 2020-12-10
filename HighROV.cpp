@@ -8,10 +8,11 @@
 #include "DepthSensor.h"
 #include "Manipulator.h"
 #include "Config.h"
+#include "ImuSensor.h"
 
+ImuSensor imu;
 rov::RovControl control;
 rov::RovTelimetry telimetry;
-
 
 void HighROV::init() {
     Serial.println("HighROV init");
@@ -22,8 +23,8 @@ void HighROV::init() {
     RotaryCameras::init();
     DepthSensor::init();
     Manipulator::init();
+    imu.init();
     delay(7000);
-
 }
 
 void debug(rov::RovControl &ctrl) {
@@ -50,4 +51,9 @@ void HighROV::run() {
     }
 
     telimetry.depth = DepthSensor::get_depth();
+
+    imu.processImu();
+    telimetry.yaw = imu.get_yaw();
+    telimetry.roll = imu.get_roll();
+    telimetry.pitch = imu.get_pitch();
 }

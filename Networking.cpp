@@ -14,7 +14,7 @@ void Networking::read_write_udp(rov::RovTelimetry &tel, rov::RovControl &ctrl) {
         
         ctrl.fromRovControlMsg(buffer, size);
         size = tel.toRovTelemetryMsg(buffer);
-        tel.ammeter += 1;
+        // tel.ammeter += 1;
         inst().write(buffer, size);
     }
 }
