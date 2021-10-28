@@ -1,24 +1,6 @@
 #include "PWMController.h"
 #include "Config.h"
 
-/*
-
-for (int i = 0; i < 4; i++) {
-    m_pca.digitalWrite(i, HIGH);
-}
-
-digitalWrite(LED_BUILTIN, HIGH);
-delay(200);
-
-for (int i = 0; i < 4; i++) {
-    m_pca.digitalWrite(i, LOW);
-}
-
-digitalWrite(LED_BUILTIN, LOW);
-delay(200);
-SerialUSB.println("loop!");
-
-*/
 
 void PWMController::init() {
     using namespace config::pwm;
@@ -43,6 +25,8 @@ void PWMController::init() {
 
     pwm.m_servos[config::servos::front].attach(servo_front_pin);
     pwm.m_servos[config::servos::back].attach(servo_back_pin);
+
+    pinMode(config::pwm::cam_select_pin, OUTPUT);
 
     delay(10);
 }
@@ -70,6 +54,16 @@ void PWMController::set_manipulator(int ch, int power) {
 
     /* TODO: try to emulate PWM on this chip to set manipulator power level */
     // int16_t pulse = map(abs(power), 0, 100, 0, 4096);
+}
+
+void PWMController::switch_camera(bool state) {
+    digitalWrite(config::pwm::cam_select_pin, state);
+}
+
+void PWMController::switch_camera() {
+    static bool state = false;
+    state = !state;
+    switch_camera(state);
 }
 
 PWMController & PWMController::inst() {

@@ -8,10 +8,10 @@
 #include "DepthSensor.h"
 #include "Manipulator.h"
 #include "Config.h"
-#include "ImuSensor.h"
+#include "IMUSensor.h"
 #include "USB/USBAPI.h"
 
-ImuSensor imu;
+Imu::IMUSensor imu;
 rov::RovControl control;
 rov::RovTelimetry telimetry;
 
@@ -26,8 +26,9 @@ void HighROV::init() {
     RotaryCameras::init();
     DepthSensor::init();
     Manipulator::init();
-    // imu.init();
-    // delay(3000);
+    imu.init();
+
+    // delay(5000);
 }
 
 void debug(rov::RovControl &ctrl) {
@@ -41,12 +42,9 @@ void debug(rov::RovControl &ctrl) {
     PWMController::set_thruster(vertical_back, ctrl.thrusterPower[5]);
 }
 
-
-void HighROV::run() {
+void test_peripherals() {
     static uint64_t counter = 0;
     counter++;
-    // SerialUSB.println(counter);
-    // delay(200);
 
     int p = (counter % 200) - 100;
 
@@ -67,11 +65,28 @@ void HighROV::run() {
 
     Manipulator::set_power(manip_p, manip_p);
 
-    SerialUSB.print(p);
-    SerialUSB.print("\t");
-    SerialUSB.println(manip_p);
+    // if (counter % 10 == 0) {
+    //     SerialUSB.print(p);
+    //     SerialUSB.print("\t");
+    //     SerialUSB.println(manip_p);
+    // }
 
-    delay(10);
+    // SerialUSB.println(p);
+
+    // delay(30);
+}
+
+void HighROV::run() {
+    test_peripherals();
+    imu.update();
+
+    // digitalWrite(LED_BUILTIN, HIGH);
+    // delay(10);
+    // digitalWrite(LED_BUILTIN, LOW);
+    // delay(10);
+
+    SerialUSB.print("Depth: ");
+    SerialUSB.println(DepthSensor::get_depth());
 
     // SerialUSB.println(p);
 

@@ -18,7 +18,7 @@ float DepthSensor::get_depth() {
     if ((millis() - ds.time_update) > 100) {
         ds.sensor.read();
         ds.time_update = millis();
-        if (abs(ds.sensor.depth() - ds.depth) < 1) {
+        if (abs(ds.sensor.depth() - ds.depth) < 10) {
             ds.depth = ds.sensor.depth();
         }
     }
