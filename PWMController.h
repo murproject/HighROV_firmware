@@ -7,19 +7,6 @@
 class PWMController
 {
 public:
-    enum Thrusters {
-        horizontal_front_left = 0,
-        horizontal_front_right,
-        horizontal_back_left,
-        horizontal_back_right,
-        vertical_front,
-        vertical_back,
-    };
-
-    enum CamServos {
-        front = 0,
-        back = 1,
-    };
 
     static void init();
     static void set_servo(int idx, int angle);

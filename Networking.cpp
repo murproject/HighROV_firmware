@@ -11,7 +11,7 @@ void Networking::read_write_udp(rov::RovTelimetry &tel, rov::RovControl &ctrl) {
     int size = inst().read(buffer, 128);
     Serial.println(size);
     if (size) {
-        
+
         ctrl.fromRovControlMsg(buffer, size);
         size = tel.toRovTelemetryMsg(buffer);
         // tel.ammeter += 1;
@@ -27,7 +27,7 @@ Networking & Networking::inst() {
 
 int Networking::read(uint8_t * buffer, int size) {
     int packetSize = Udp.parsePacket();
-   
+
     if (packetSize) {
         Serial.println(packetSize);
         Udp.read(buffer, UDP_TX_PACKET_MAX_SIZE);

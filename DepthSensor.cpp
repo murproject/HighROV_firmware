@@ -2,8 +2,13 @@
 
 void DepthSensor::init() {
     auto &ds = inst();
-    ds.sensor.init();
-    
+    bool ok = ds.sensor.init();
+
+    if (!ok) {
+        SerialUSB.println("Depth sensor init failed!");
+        return;
+    }
+
     ds.sensor.setModel(MS5837::MS5837_30BA);
     ds.sensor.setFluidDensity(997); // kg/m^3 (freshwater, 1029 for seawater)
 }

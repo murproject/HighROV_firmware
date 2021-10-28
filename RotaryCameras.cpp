@@ -4,12 +4,12 @@
 
 void RotaryCameras::init() {
     auto &data = inst();
-    PWMController::set_servo(PWMController::CamServos::front, data.angles[0]);
-    PWMController::set_servo(PWMController::CamServos::back, data.angles[1]);
+    PWMController::set_servo(config::servos::front, data.angles[0]);
+    PWMController::set_servo(config::servos::back, data.angles[1]);
 }
 
 void RotaryCameras::set_angle(int idx, int angle) {
-    int servo_idx = (idx == 0) ? PWMController::CamServos::front : PWMController::CamServos::back;
+    int servo_idx = (idx == 0) ? config::servos::front : config::servos::back;
     auto &data = inst();
 
     if ((millis() - data.times_update[idx]) > 17) {

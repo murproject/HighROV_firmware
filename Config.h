@@ -37,4 +37,22 @@ namespace config {
         constexpr uint8_t remoteip[4] = {192, 168, 1, 4};
         constexpr uint16_t remote_port = 3010;
     }
+
+    namespace thrusters {
+        enum thrusters {
+            horizontal_front_left = 0,
+            horizontal_front_right,
+            horizontal_back_left,
+            horizontal_back_right,
+            vertical_front,
+            vertical_back,
+        };
+    }
+
+    namespace servos {
+        enum servos {
+            front = 0,
+            back = 1,
+        };
+    }
 }

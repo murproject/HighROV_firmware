@@ -34,15 +34,15 @@ void PWMController::init() {
         pwm.m_pca.write(i, LOW);
     }
 
-    pwm.m_thrusters[Thrusters::horizontal_front_left].attach(th_horizontal_front_left_pin);
-    pwm.m_thrusters[Thrusters::horizontal_front_right].attach(th_horizontal_front_right_pin);
-    pwm.m_thrusters[Thrusters::horizontal_back_left].attach(th_horizontal_back_left_pin);
-    pwm.m_thrusters[Thrusters::horizontal_back_right].attach(th_horizontal_back_right_pin);
-    pwm.m_thrusters[Thrusters::vertical_front].attach(th_vertical_front_pin);
-    pwm.m_thrusters[Thrusters::vertical_back].attach(th_vertical_back_pin);
+    pwm.m_thrusters[config::thrusters::horizontal_front_left].attach(th_horizontal_front_left_pin);
+    pwm.m_thrusters[config::thrusters::horizontal_front_right].attach(th_horizontal_front_right_pin);
+    pwm.m_thrusters[config::thrusters::horizontal_back_left].attach(th_horizontal_back_left_pin);
+    pwm.m_thrusters[config::thrusters::horizontal_back_right].attach(th_horizontal_back_right_pin);
+    pwm.m_thrusters[config::thrusters::vertical_front].attach(th_vertical_front_pin);
+    pwm.m_thrusters[config::thrusters::vertical_back].attach(th_vertical_back_pin);
 
-    pwm.m_servos[CamServos::front].attach(servo_front_pin);
-    pwm.m_servos[CamServos::back].attach(servo_back_pin);
+    pwm.m_servos[config::servos::front].attach(servo_front_pin);
+    pwm.m_servos[config::servos::back].attach(servo_back_pin);
 
     delay(10);
 }
