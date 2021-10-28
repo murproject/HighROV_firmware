@@ -15,6 +15,7 @@ void setup() {
     Wire.begin();
     //Wire.setClock(100000);
     delay(100);
+    SerialUSB.begin(115200);
     Serial.begin(115200);
     HighROV::init();
 }

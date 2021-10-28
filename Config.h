@@ -1,5 +1,6 @@
 #pragma once
 #include <stdint.h>
+#include "variant.h"
 
 namespace config {
     namespace wifi {
@@ -8,19 +9,26 @@ namespace config {
         constexpr char pass_for_update[] = "1";
     }
     namespace pwm {
-        constexpr int left_front_horizontal_ch = 0;
-        constexpr int right_front_horizontal_ch = 1;
-        constexpr int left_back_horizontal_ch = 2;
-        constexpr int right_back_horizontal_ch = 3;
-        constexpr int front_vertical_ch = 4;
-        constexpr int back_vertical_ch = 5;
-        constexpr int servo_front_ch = 14;
-        constexpr int servo_back_ch = 15;
-        constexpr int manip_left_ch = 10;
-        constexpr int manip_right_ch = 11;
-        constexpr int manip_grab_ch = 12;
-        constexpr int manip_relese_ch = 13;
-        constexpr int pwm_freq = 50;
+        /* TODO */
+        // thrusters
+        constexpr int th_horizontal_front_left_pin  = 2;
+        constexpr int th_horizontal_front_right_pin = 3;
+        constexpr int th_horizontal_back_left_pin   = 4;
+        constexpr int th_horizontal_back_right_pin  = 5;
+        constexpr int th_vertical_front_pin         = 6;
+        constexpr int th_vertical_back_pin          = 7;
+
+        // manipulator PCA9536 channels
+        constexpr int manip_left_ch     = 0;
+        constexpr int manip_right_ch    = 1;
+
+        constexpr int manip_grab_ch     = 2;
+        constexpr int manip_relese_ch   = 3;
+
+        // cam servos pins
+        constexpr int servo_front_pin   = A4;
+        constexpr int servo_back_pin    = A5;
+
     }
 
     namespace networking {

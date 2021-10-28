@@ -4,12 +4,12 @@
 
 
 void Thrusters::init() {
-    PWMController::set_thruster(config::pwm::left_front_horizontal_ch, 0);
-    PWMController::set_thruster(config::pwm::right_front_horizontal_ch, 0);
-    PWMController::set_thruster(config::pwm::left_back_horizontal_ch, 0);
-    PWMController::set_thruster(config::pwm::right_back_horizontal_ch, 0);
-    PWMController::set_thruster(config::pwm::front_vertical_ch, 0);
-    PWMController::set_thruster(config::pwm::back_vertical_ch, 0);
+    PWMController::set_thruster(PWMController::Thrusters::horizontal_front_left, 0);
+    PWMController::set_thruster(PWMController::Thrusters::horizontal_front_right, 0);
+    PWMController::set_thruster(PWMController::Thrusters::horizontal_back_left, 0);
+    PWMController::set_thruster(PWMController::Thrusters::horizontal_back_right, 0);
+    PWMController::set_thruster(PWMController::Thrusters::vertical_front, 0);
+    PWMController::set_thruster(PWMController::Thrusters::vertical_back, 0);
 }
 
 void Thrusters::update_thrusters(rov::RovControl &ctrl, rov::RovTelimetry & tel) {
@@ -19,16 +19,16 @@ void Thrusters::update_thrusters(rov::RovControl &ctrl, rov::RovTelimetry & tel)
         const int16_t w = ctrl.axisW;
         auto &data = inst();
 
-        PWMController::set_thruster(config::pwm::left_front_horizontal_ch, data.directions[0] * constrain(y + x + w, -100, 100));
-        PWMController::set_thruster(config::pwm::right_front_horizontal_ch, data.directions[1] * constrain(y - x - w, -100, 100));
-        PWMController::set_thruster(config::pwm::left_back_horizontal_ch, data.directions[2] * constrain(y - x + w, -100, 100));
-        PWMController::set_thruster(config::pwm::right_back_horizontal_ch, data.directions[3] * constrain(y + x - w, -100, 100));
+        PWMController::set_thruster(PWMController::Thrusters::horizontal_front_left, data.directions[0] * constrain(y + x + w, -100, 100));
+        PWMController::set_thruster(PWMController::Thrusters::horizontal_front_right, data.directions[1] * constrain(y - x - w, -100, 100));
+        PWMController::set_thruster(PWMController::Thrusters::horizontal_back_left, data.directions[2] * constrain(y - x + w, -100, 100));
+        PWMController::set_thruster(PWMController::Thrusters::horizontal_back_right, data.directions[3] * constrain(y + x - w, -100, 100));
     }
 
     {
         auto &data = inst();
-        PWMController::set_thruster(config::pwm::front_vertical_ch, constrain(data.directions[4] * ctrl.axisZ,-100,100));
-        PWMController::set_thruster(config::pwm::back_vertical_ch, constrain(data.directions[5] * ctrl.axisZ, -100, 100));
+        PWMController::set_thruster(PWMController::Thrusters::vertical_front, constrain(data.directions[4] * ctrl.axisZ,-100,100));
+        PWMController::set_thruster(PWMController::Thrusters::vertical_back, constrain(data.directions[5] * ctrl.axisZ, -100, 100));
     }
 }
 

@@ -1,29 +1,75 @@
 #include "PWMController.h"
-
 #include "Config.h"
+
+/*
+
+for (int i = 0; i < 4; i++) {
+    m_pca.digitalWrite(i, HIGH);
+}
+
+digitalWrite(LED_BUILTIN, HIGH);
+delay(200);
+
+for (int i = 0; i < 4; i++) {
+    m_pca.digitalWrite(i, LOW);
+}
+
+digitalWrite(LED_BUILTIN, LOW);
+delay(200);
+SerialUSB.println("loop!");
+
+*/
+
 void PWMController::init() {
+    using namespace config::pwm;
+
     auto &pwm = inst();
-    pwm.m_pwm.begin();
-    pwm.m_pwm.setOscillatorFrequency(27000000);
-    pwm.m_pwm.setPWMFreq(config::pwm::pwm_freq);  
+
+    if (pwm.m_pca.begin() == false) {
+        SerialUSB.println("ERROR: PCA9536 not detected! Check I2C connection.");
+    }
+
+    for (int i = 0; i < 4; i++) {
+        pwm.m_pca.pinMode(i, OUTPUT);
+        pwm.m_pca.write(i, LOW);
+    }
+
+    pwm.m_thrusters[Thrusters::horizontal_front_left].attach(th_horizontal_front_left_pin);
+    pwm.m_thrusters[Thrusters::horizontal_front_right].attach(th_horizontal_front_right_pin);
+    pwm.m_thrusters[Thrusters::horizontal_back_left].attach(th_horizontal_back_left_pin);
+    pwm.m_thrusters[Thrusters::horizontal_back_right].attach(th_horizontal_back_right_pin);
+    pwm.m_thrusters[Thrusters::vertical_front].attach(th_vertical_front_pin);
+    pwm.m_thrusters[Thrusters::vertical_back].attach(th_vertical_back_pin);
+
+    pwm.m_servos[CamServos::front].attach(servo_front_pin);
+    pwm.m_servos[CamServos::back].attach(servo_back_pin);
 
     delay(10);
 }
 
-void PWMController::set_servo(int ch, int angle) {
-    double pulse = map(angle, 0, 180, 1000, 2000);
-    inst().m_pwm.writeMicroseconds(ch, pulse);
+void PWMController::set_servo(int idx, int angle) {
+    int pulse = map(angle, 0, 180, 1000, 2000);
+    inst().m_servos[idx].writeMicroseconds(pulse);
 }
 
-void PWMController::set_thruster(int ch, int power) {
-    double pulse = map(power, -100, 100, 990, 1990);
+void PWMController::set_thruster(int idx, int power) {
+    int pulse = map(power, -100, 100, 1000, 2000);
     pulse = constrain(pulse, 1000, 2000);
-    inst().m_pwm.writeMicroseconds(ch, pulse);
+
+    inst().m_thrusters[idx].writeMicroseconds(pulse);
 }
 
 void PWMController::set_manipulator(int ch, int power) {
-    int16_t pulse = map(abs(power), 0, 100, 0, 4096);
-    inst().m_pwm.setPWM(ch, pulse, false);
+    PinStatus state = LOW;
+
+    if (abs(power) >= 50) {
+        state = HIGH;
+    }
+
+    inst().m_pca.write(ch, state);
+
+    /* TODO: try to emulate PWM on this chip to set manipulator power level */
+    // int16_t pulse = map(abs(power), 0, 100, 0, 4096);
 }
 
 PWMController & PWMController::inst() {
@@ -32,5 +78,6 @@ PWMController & PWMController::inst() {
 }
 
 PWMController::PWMController() {
+
 }
 

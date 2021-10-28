@@ -33,5 +33,5 @@ void Manipulator::set(int ch1, int ch2, int power) {
         PWMController::set_manipulator(ch2, power);
         return;
     }
-    
+
 }
