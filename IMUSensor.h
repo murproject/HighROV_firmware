@@ -8,7 +8,7 @@
 namespace Imu {
 	class IMUSensor {
 	private:
-#define MAX_PACKET_LEN          (128)
+#define MAX_PACKET_LEN (128)
 
 		typedef struct
 		{
@@ -16,6 +16,7 @@ namespace Imu {
 			uint8_t buf[MAX_PACKET_LEN] = {0};
 			uint16_t payload_len;
 			uint16_t len;
+			uint8_t type;
 		}Packet_t;
 
 		Packet_t RxPkt;

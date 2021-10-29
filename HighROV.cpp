@@ -85,7 +85,7 @@ void HighROV::run() {
     // digitalWrite(LED_BUILTIN, LOW);
     // delay(10);
 
-    SerialUSB.print("Depth: ");
+    SerialUSB.print("\tDepth: ");
     SerialUSB.println(DepthSensor::get_depth());
 
     // SerialUSB.println(p);

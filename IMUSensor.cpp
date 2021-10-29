@@ -82,6 +82,7 @@ namespace Imu {
                 status = kStatus_Cmd;
             break;
         case kStatus_Cmd:
+            RxPkt.type = c;
             if (c == 0xA5)
                 status = kStatus_LenLow;
             break;
@@ -92,6 +93,9 @@ namespace Imu {
             break;
         case kStatus_LenHigh:
             RxPkt.payload_len |= (c << 8);
+            // SerialUSB.print("[PAYLOD LEN: ");
+            // SerialUSB.print(RxPkt.payload_len, DEC);
+            // SerialUSB.print("] \t");
             crc_header[3] = c;
             status = kStatus_CRCLow;
             break;
@@ -108,11 +112,21 @@ namespace Imu {
         case kStatus_Data:
             if (RxPkt.ofs >= MAX_PACKET_LEN) {
                 status = kStatus_Idle;
+                RxPkt.ofs = 0;
+                CRCCalculated = 0;
+                SerialUSB.print("[OVERFLOW PREVENTED]");
                 break;
             }
 
             RxPkt.buf[RxPkt.ofs++] = c;
-            if (RxPkt.ofs >= RxPkt.payload_len)
+
+            if(RxPkt.type == 0xA7 && RxPkt.ofs >= 8)
+            {
+                RxPkt.payload_len = 8;
+                status = kStatus_Idle;
+            }
+
+            if (RxPkt.ofs >= RxPkt.payload_len && RxPkt.type == 0xA5)
             {
                 /* calculate CRC */
                 crc16_update(&CRCCalculated, crc_header, 4);
@@ -121,8 +135,20 @@ namespace Imu {
                 /* CRC match */
                 if (CRCCalculated == CRCReceived)
                 {
-
+                    // SerialUSB.print("[DONE]\t");
+                    // SerialUSB.print("TYPE: ");
+                    // SerialUSB.print(RxPkt.type, HEX);
+                    // SerialUSB.print("\n\t");
                     updateEuler(&RxPkt);
+                } else {
+                    SerialUSB.print("[CRC FAIL] ");
+                    SerialUSB.print("excepted: ");
+                    SerialUSB.print(CRCReceived, HEX);
+                    SerialUSB.print(", got: ");
+                    SerialUSB.print(CRCCalculated, HEX);
+                    // SerialUSB.print(", TYPE: ");
+                    // SerialUSB.print(RxPkt.type, HEX);
+                    SerialUSB.print("\n\t");
                 }
                 status = kStatus_Idle;
             }
@@ -183,7 +209,7 @@ namespace Imu {
     void IMUSensor::update()
     {
         if (SerialImu.available()) {
-            // delay(3);
+            delay(5);
             while (SerialImu.available())
             {
                 char ch = SerialImu.read();
@@ -197,7 +223,7 @@ namespace Imu {
             SerialUSB.print(getRoll());
             SerialUSB.print("\t");
             SerialUSB.print(getPitch());
-            SerialUSB.println("\t");
+            SerialUSB.print("\t");
         }
     }
     // void IMUSensor::commit(RovTelimetry & tel_)
