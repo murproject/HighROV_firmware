@@ -1,4 +1,6 @@
+#include "Arduino.h"
 #include "DepthSensor.h"
+#include "Wire.h"
 
 void DepthSensor::init() {
     auto &ds = inst();
@@ -21,8 +23,15 @@ float DepthSensor::get_depth() {
         if (abs(ds.sensor.depth() - ds.depth) < 10) {
             ds.depth = ds.sensor.depth();
         } else {
-            ds.sensor.init();
+            SerialUSB.println("\n\nDepth sensor fatality.\n\n");
+            Wire.end();
+            Wire.begin(); // TODO?
+            init();
         }
+    }
+
+    if ((millis() - ds.time_update) > 5000) {
+        init(); // TODO; delete?
     }
     return ds.depth;
 }
