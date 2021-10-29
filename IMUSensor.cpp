@@ -7,6 +7,8 @@ Uart SerialImu (&sercom1, 12, 11, SERCOM_RX_PAD_3, UART_TX_PAD_0);
 
 void SERCOM1_Handler() {
     SerialImu.IrqHandler();
+
+    Imu::IMUSensor::inst().update();
 }
 
 namespace Imu {
@@ -83,8 +85,11 @@ namespace Imu {
             break;
         case kStatus_Cmd:
             RxPkt.type = c;
-            if (c == 0xA5)
+            if (c == 0xA5) {
                 status = kStatus_LenLow;
+            } else {
+                status = kStatus_Idle;
+            }
             break;
         case kStatus_LenLow:
             RxPkt.payload_len = c;
@@ -96,6 +101,9 @@ namespace Imu {
             // SerialUSB.print("[PAYLOD LEN: ");
             // SerialUSB.print(RxPkt.payload_len, DEC);
             // SerialUSB.print("] \t");
+            // if (RxPkt.payload_len != 35) {
+            //     SerialUSB.print("\n\n >> PAYLOAD LEN is suspicious! <<\n\n");
+            // }
             crc_header[3] = c;
             status = kStatus_CRCLow;
             break;
@@ -114,20 +122,21 @@ namespace Imu {
                 status = kStatus_Idle;
                 RxPkt.ofs = 0;
                 CRCCalculated = 0;
-                SerialUSB.print("[OVERFLOW PREVENTED]");
+                // SerialUSB.print("[OVERFLOW PREVENTED]");
                 break;
             }
 
             RxPkt.buf[RxPkt.ofs++] = c;
 
-            if(RxPkt.type == 0xA7 && RxPkt.ofs >= 8)
-            {
-                RxPkt.payload_len = 8;
-                status = kStatus_Idle;
-            }
+            // if(RxPkt.type == 0xA7 && RxPkt.ofs >= 8)
+            // {
+            //     RxPkt.payload_len = 8;
+            //     status = kStatus_Idle;
+            // }
 
             if (RxPkt.ofs >= RxPkt.payload_len && RxPkt.type == 0xA5)
             {
+                // SerialImu.flush();
                 /* calculate CRC */
                 crc16_update(&CRCCalculated, crc_header, 4);
                 crc16_update(&CRCCalculated, RxPkt.buf, RxPkt.ofs);
@@ -146,10 +155,29 @@ namespace Imu {
                     SerialUSB.print(CRCReceived, HEX);
                     SerialUSB.print(", got: ");
                     SerialUSB.print(CRCCalculated, HEX);
-                    // SerialUSB.print(", TYPE: ");
-                    // SerialUSB.print(RxPkt.type, HEX);
                     SerialUSB.print("\n\t");
                 }
+
+                // SerialUSB.print("\nPACKET: ");
+
+                // for (int i = 0; i < 4; i++) {
+                //     SerialUSB.print(crc_header[i], HEX);
+                //     SerialUSB.print(" ");
+                // }
+
+                // SerialUSB.print(CRCReceived, HEX);
+                // SerialUSB.print(" ");
+                // SerialUSB.print("\n");
+
+                // for (int i = 0; i < RxPkt.payload_len; i++) {
+                //     SerialUSB.print(RxPkt.buf[i], HEX);
+                //     SerialUSB.print(" ");
+                // }
+
+                // SerialUSB.print("\n\n");
+
+                // SerialImu.flush();
+
                 status = kStatus_Idle;
             }
             break;
@@ -205,11 +233,12 @@ namespace Imu {
         SerialImu.begin(115200);
         pinPeripheral(11, PIO_SERCOM);
         pinPeripheral(12, PIO_SERCOM);
+        // SERIAL_BUFFER_SIZE
     }
     void IMUSensor::update()
     {
         if (SerialImu.available()) {
-            delay(5);
+            // delay(5);
             while (SerialImu.available())
             {
                 char ch = SerialImu.read();
@@ -218,12 +247,12 @@ namespace Imu {
         }
 
         if (m_isUpdated) {
-            SerialUSB.print(getYaw());
-            SerialUSB.print("\t");
-            SerialUSB.print(getRoll());
-            SerialUSB.print("\t");
-            SerialUSB.print(getPitch());
-            SerialUSB.print("\t");
+            // SerialUSB.print(getYaw());
+            // SerialUSB.print("\t");
+            // SerialUSB.print(getRoll());
+            // SerialUSB.print("\t");
+            // SerialUSB.print(getPitch());
+            // SerialUSB.print("\t");
         }
     }
     // void IMUSensor::commit(RovTelimetry & tel_)
@@ -251,5 +280,10 @@ namespace Imu {
     {
 
 
+    }
+
+    IMUSensor & IMUSensor::inst() {
+        static IMUSensor imu;
+        return imu;
     }
 } // namespace rov

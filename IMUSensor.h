@@ -8,7 +8,7 @@
 namespace Imu {
 	class IMUSensor {
 	private:
-#define MAX_PACKET_LEN (128)
+#define MAX_PACKET_LEN (256)
 
 		typedef struct
 		{
@@ -32,6 +32,7 @@ namespace Imu {
 		bool m_isUpdated;
 
 	public:
+		static IMUSensor &inst();
 		IMUSensor();
 		void init();
 		void update();
