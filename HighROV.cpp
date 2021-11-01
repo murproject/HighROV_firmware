@@ -11,7 +11,7 @@
 #include "IMUSensor.h"
 #include "USB/USBAPI.h"
 
-// Imu::IMUSensor imu;
+// IMUSensor imu;
 rov::RovControl control;
 rov::RovTelimetry telimetry;
 
@@ -35,7 +35,7 @@ void HighROV::init() {
     RotaryCameras::init();
     DepthSensor::init();
     Manipulator::init();
-    Imu::IMUSensor::inst().init(); // TODO: change
+    IMUSensor::inst().init(); // TODO: change
 
     // delay(5000);
 }
@@ -64,13 +64,16 @@ void test_peripherals() {
     PWMController::set_thruster(config::thrusters::vertical_front, p);
     PWMController::set_thruster(config::thrusters::vertical_back, p);
 
+    PWMController::set_thruster(config::thrusters::custom_1, p);
+    PWMController::set_thruster(config::thrusters::custom_2, p);
+
     int angle = (counter % 200) > 100 ? 2 : -2;
 
     RotaryCameras::set_angle(config::servos::front, angle);
     RotaryCameras::set_angle(config::servos::back, angle);
 
-    int manip_p = p >  50 ?  1 :
-                  p < -50 ? -1 : 0;
+    int manip_p = p / 5 >  10 ?  1 :
+                  p / 5 < -10 ? -1 : 0;
 
     Manipulator::set_power(manip_p, manip_p);
 
@@ -90,19 +93,21 @@ void HighROV::run() {
     // imu.update();
 
     SerialUSB.print("Yaw: ");
-    SerialUSB.print(Imu::IMUSensor::inst().getYaw());
+    SerialUSB.print(IMUSensor::inst().getYaw());
     SerialUSB.print("\tPitch: ");
-    SerialUSB.print(Imu::IMUSensor::inst().getRoll());
+    SerialUSB.print(IMUSensor::inst().getRoll());
     SerialUSB.print("\tRoll: ");
-    SerialUSB.print(Imu::IMUSensor::inst().getPitch());
+    SerialUSB.print(IMUSensor::inst().getPitch());
 
     // digitalWrite(LED_BUILTIN, HIGH);
-    // delay(10);
+    // delay(5);
     // digitalWrite(LED_BUILTIN, LOW);
-    // delay(10);
+    // delay(5);
 
     SerialUSB.print("\tDepth: ");
     SerialUSB.println(DepthSensor::get_depth());
+
+
 
     // SerialUSB.println(p);
 
