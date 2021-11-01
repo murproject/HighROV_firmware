@@ -21,7 +21,7 @@ private:
 
     PCA9536 m_pca;
 
-    Servo m_thrusters[6];
+    Servo m_thrusters[8];
     Servo m_servos[2];
 };
 

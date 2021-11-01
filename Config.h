@@ -18,8 +18,8 @@ namespace config {
         constexpr int th_horizontal_back_right_pin  = 5;
         constexpr int th_vertical_front_pin         = 6;
         constexpr int th_vertical_back_pin          = 7;
-        // constexpr int th_custom_1 = 8;
-        // constexpr int th_custom_2 = 9;
+        constexpr int th_custom_1_pin               = 8;
+        constexpr int th_custom_2_pin               = 9;
 
         /* manipulator PCA9536 channels */
         constexpr int manip_left_ch     = 0;
@@ -52,6 +52,8 @@ namespace config {
             horizontal_back_right,
             vertical_front,
             vertical_back,
+            custom_1,
+            custom_2
         };
     }
 

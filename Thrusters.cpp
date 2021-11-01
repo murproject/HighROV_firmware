@@ -12,6 +12,9 @@ void Thrusters::init() {
     PWMController::set_thruster(horizontal_back_right, 0);
     PWMController::set_thruster(vertical_front, 0);
     PWMController::set_thruster(vertical_back, 0);
+
+    PWMController::set_thruster(custom_1, 0);
+    PWMController::set_thruster(custom_2, 0);
 }
 
 void Thrusters::update_thrusters(rov::RovControl &ctrl, rov::RovTelimetry & tel) {

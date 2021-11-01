@@ -23,6 +23,9 @@ void PWMController::init() {
     pwm.m_thrusters[config::thrusters::vertical_front].attach(th_vertical_front_pin);
     pwm.m_thrusters[config::thrusters::vertical_back].attach(th_vertical_back_pin);
 
+    pwm.m_thrusters[config::thrusters::custom_1].attach(th_custom_1_pin);
+    pwm.m_thrusters[config::thrusters::custom_2].attach(th_custom_2_pin);
+
     pwm.m_servos[config::servos::front].attach(servo_front_pin);
     pwm.m_servos[config::servos::back].attach(servo_back_pin);
 
