@@ -93,15 +93,9 @@ void test_peripherals() {
 }
 
 void HighROV::run() {
-    /* TODO: Ammeter → should support different ACS725 sensors (CTR-20, CTR-30, CTR-40…) */
 
-    AnalogSensors::update();
-    SerialUSB.print("$");
-    SerialUSB.print(AnalogSensors::getVoltage());
-    SerialUSB.print(";");
 
     // test_peripherals();
-
     // imu.update();
 
     // SerialUSB.print("Yaw: ");
