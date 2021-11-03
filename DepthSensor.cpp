@@ -7,7 +7,7 @@ void DepthSensor::init() {
     bool ok = ds.sensor.init();
 
     if (!ok) {
-        SerialUSB.println("Depth sensor init failed!");
+        SerialUSB.println("Depth sensor init failed!"); // TODO //
         return;
     }
 
@@ -17,21 +17,24 @@ void DepthSensor::init() {
 
 float DepthSensor::get_depth() {
     auto &ds = inst();
-    if ((millis() - ds.time_update) > 100) {
+    if ((millis() - ds.time_update) > 200) {
         ds.sensor.read();
         ds.time_update = millis();
-        if (abs(ds.sensor.depth() - ds.depth) < 10) {
+        if (abs(ds.sensor.depth()) < 150) {
             ds.depth = ds.sensor.depth();
-        } else {
-            SerialUSB.println("\n\nDepth sensor fatality.\n\n");
+        } else { // don't accept value if value is too big (probably corrupted data)
+            SerialUSB.println("\n\nDepth sensor fatality.\n\n"); // TODO //
             Wire.end();
             Wire.begin(); // TODO?
+            Wire.setTimeout(1000);
+            Wire.setClock(10000);
+
             init();
         }
     }
 
     if ((millis() - ds.time_update) > 5000) {
-        init(); // TODO; delete?
+        // init(); // TODO; delete?
     }
     return ds.depth;
 }

@@ -13,7 +13,9 @@
 void setup() {
     //delay(500);
     Wire.begin();
-    //Wire.setClock(100000);
+    Wire.setTimeout(1000);
+    Wire.setClock(10000);
+
     delay(100);
     SerialUSB.begin(115200);
     Serial.begin(115200);
