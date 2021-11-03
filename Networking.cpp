@@ -2,6 +2,7 @@
 #include "Config.h"
 
 void Networking::init() {
+    Ethernet.init(config::networking::cs_pin);
     Ethernet.begin(inst().mac, inst().m_self_ip);
     inst().Udp.begin(inst().m_self_port);
 }
