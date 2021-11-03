@@ -36,13 +36,6 @@ namespace config {
         constexpr int cam_select_pin    = 10;
     }
 
-    namespace networking {
-        constexpr uint8_t selfip[4] = {192, 168, 1, 5};
-        constexpr uint16_t self_port = 3020;
-        constexpr uint8_t remoteip[4] = {192, 168, 1, 4};
-        constexpr uint16_t remote_port = 3010;
-    }
-
     /* indices of thursters */
     namespace thrusters {
         enum thrusters {
@@ -64,4 +57,21 @@ namespace config {
             back = 1,
         };
     }
+
+    namespace networking {
+        constexpr uint8_t selfip[4] = {192, 168, 1, 5};
+        constexpr uint16_t self_port = 3020;
+        constexpr uint8_t remoteip[4] = {192, 168, 1, 4};
+        constexpr uint16_t remote_port = 3010;
+        constexpr uint8_t cs_pin = 43; // W5500 CS on PA13 pin
+    }
+
+    namespace analog {
+        enum ammeter_types {}; // TODO: should support different ammeter types!
+
+        constexpr int ammeter_pin = A0;
+        constexpr int voltmeter_pin = A1;
+    } // namespace analog
+
+
 }
