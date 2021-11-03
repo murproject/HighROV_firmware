@@ -206,11 +206,11 @@ void IMUSensor::update()
         while (SerialImu.available())
         {
             char ch = SerialImu.read();
-            packetDecode(ch);
+            inst().packetDecode(ch);
         }
     }
 
-    if (m_isUpdated) {
+    if (inst().m_isUpdated) {
         // SerialUSB.print(getYaw());
         // SerialUSB.print("\t");
         // SerialUSB.print(getRoll());
@@ -228,17 +228,17 @@ void IMUSensor::update()
 //         m_isUpdated = false;
 //     }
 // }
-float IMUSensor::getPitch() const
+float IMUSensor::getPitch()
 {
-    return Eular[0];
+    return inst().Eular[0];
 }
-float IMUSensor::getRoll() const
+float IMUSensor::getRoll()
 {
-    return Eular[1];
+    return inst().Eular[1];
 }
-float IMUSensor::getYaw() const
+float IMUSensor::getYaw()
 {
-    return Eular[2];
+    return inst().Eular[2];
 }
 void IMUSensor::update_int()
 {

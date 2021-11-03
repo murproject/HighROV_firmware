@@ -65,12 +65,12 @@ private:
 public:
     static IMUSensor &inst();
     IMUSensor();
-    void init();
-    void update();
+    static void init();
+    static void update();
     // void commit(RovTelimetry & tel_);
-    float getPitch() const;
-    float getRoll() const;
-    float getYaw() const;
+    static float getPitch();
+    static float getRoll();
+    static float getYaw();
     void update_int();
 };
 

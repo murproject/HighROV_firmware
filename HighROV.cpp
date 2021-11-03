@@ -10,6 +10,7 @@
 #include "Config.h"
 #include "IMUSensor.h"
 #include "USB/USBAPI.h"
+#include "AnalogSensors.h"
 
 // IMUSensor imu;
 rov::RovControl control;
@@ -35,7 +36,8 @@ void HighROV::init() {
     RotaryCameras::init();
     DepthSensor::init();
     Manipulator::init();
-    IMUSensor::inst().init(); // TODO: change
+    IMUSensor::init();
+    AnalogSensors::init();
 
     // delay(5000);
 }
@@ -85,27 +87,37 @@ void test_peripherals() {
 
     // SerialUSB.println(p);
 
+    // PIN_PA13;
+
     // delay(30);
 }
 
 void HighROV::run() {
-    test_peripherals();
+    /* TODO: Ammeter → should support different ACS725 sensors (CTR-20, CTR-30, CTR-40…) */
+
+    AnalogSensors::update();
+    SerialUSB.print("$");
+    SerialUSB.print(AnalogSensors::getVoltage());
+    SerialUSB.print(";");
+
+    // test_peripherals();
+
     // imu.update();
 
-    SerialUSB.print("Yaw: ");
-    SerialUSB.print(IMUSensor::inst().getYaw());
-    SerialUSB.print("\tPitch: ");
-    SerialUSB.print(IMUSensor::inst().getRoll());
-    SerialUSB.print("\tRoll: ");
-    SerialUSB.print(IMUSensor::inst().getPitch());
+    // SerialUSB.print("Yaw: ");
+    // SerialUSB.print(IMUSensor::inst().getYaw());
+    // SerialUSB.print("\tPitch: ");
+    // SerialUSB.print(IMUSensor::inst().getRoll());
+    // SerialUSB.print("\tRoll: ");
+    // SerialUSB.print(IMUSensor::inst().getPitch());
 
-    // digitalWrite(LED_BUILTIN, HIGH);
-    // delay(5);
-    // digitalWrite(LED_BUILTIN, LOW);
-    // delay(5);
+    // // digitalWrite(LED_BUILTIN, HIGH);
+    // // delay(5);
+    // // digitalWrite(LED_BUILTIN, LOW);
+    // // delay(5);
 
-    SerialUSB.print("\tDepth: ");
-    SerialUSB.println(DepthSensor::get_depth());
+    // SerialUSB.print("\tDepth: ");
+    // SerialUSB.println(DepthSensor::get_depth());
 
 
 
@@ -113,17 +125,24 @@ void HighROV::run() {
 
     // WiFiUpdater::check_updates();
 
-    // telimetry.depth = DepthSensor::get_depth();
+    telimetry.yaw = IMUSensor::getYaw();
+    telimetry.roll = IMUSensor::getRoll();
+    telimetry.pitch = IMUSensor::getPitch();
+    telimetry.depth = DepthSensor::get_depth();
+    telimetry.voltmeter = AnalogSensors::getVoltage();
 
-    // Networking::read_write_udp(telimetry, control);
-    // if (!control.debugFlag) {
-    //     Thrusters::update_thrusters(control, telimetry);
-    //     RotaryCameras::set_angle(0, constrain(control.cameraRotation[0], -1, 1));
-    //     RotaryCameras::set_angle(1, constrain(control.cameraRotation[1], -1, 1));
-    //     Manipulator::set_power(control.manipulatorRotation, control.manipulatorOpenClose);
-    // } else {
-    //     debug(control);
-    // }
+    Networking::read_write_udp(telimetry, control);
+    if (!control.debugFlag) {
+        Thrusters::update_thrusters(control, telimetry);
+        RotaryCameras::set_angle(0, constrain(control.cameraRotation[0], -1, 1));
+        RotaryCameras::set_angle(1, constrain(control.cameraRotation[1], -1, 1));
+        Manipulator::set_power(control.manipulatorRotation, control.manipulatorOpenClose);
+    } else {
+        // SerialUSB.println("debugging!");
+        debug(control);
+    }
+
+    delay(20);
 
 
     // imu.processImu();
