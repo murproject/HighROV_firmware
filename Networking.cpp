@@ -8,15 +8,32 @@ void Networking::init() {
 }
 
 void Networking::read_write_udp(rov::RovTelimetry &tel, rov::RovControl &ctrl) {
-    uint8_t buffer[128];
-    int size = inst().read(buffer, 128);
-    Serial.println(size);
+    static unsigned long lastTimestamp = 0;
+    static constexpr size_t buffer_size = 128;
+
+    uint8_t buffer[buffer_size];
+    int size = inst().read(buffer, buffer_size);
+
     if (size) {
 
-        ctrl.fromRovControlMsg(buffer, size);
-        size = tel.toRovTelemetryMsg(buffer);
+        auto error = ctrl.fromRovControlMsg(buffer, size);
+        SerialUSB.println(ctrl.fromErrorToString(error));
+
+        if (ctrl.version == 2) {
+            size = tel.toRovTelemetryMsgV2(buffer);
+        } else {
+            size = tel.toRovTelemetryMsgV1(buffer);
+        }
         // tel.ammeter += 1;
         inst().write(buffer, size);
+
+        unsigned long curTimestamp = millis();
+        if (abs(curTimestamp - lastTimestamp) > 1000) {
+            lastTimestamp = curTimestamp;
+
+            size = rov::RovHello::toRovHelloMsg(buffer);
+            inst().write(buffer, size);
+        }
     }
 }
 
@@ -31,7 +48,7 @@ int Networking::read(uint8_t * buffer, int size) {
 
     if (packetSize) {
         Serial.println(packetSize);
-        Udp.read(buffer, UDP_TX_PACKET_MAX_SIZE);
+        Udp.read(buffer, size);
         return packetSize;
     }
     return 0;

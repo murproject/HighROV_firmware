@@ -17,7 +17,7 @@ void AnalogSensors::update() {
 double AnalogSensors::getVoltage() {
     using namespace config::analog;
     int rawVoltage = analogRead(voltmeter_pin);
-    inst().m_voltage = round(rawVoltage / 0.6225) / 100.0; // TODO
+    inst().m_voltage = round(rawVoltage * (voltage_multiplier * 100.0)) / 100.0;
     return inst().m_voltage;
 }
 

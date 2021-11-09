@@ -18,8 +18,10 @@ namespace config {
         constexpr int th_horizontal_back_right_pin  = 5;
         constexpr int th_vertical_front_pin         = 6;
         constexpr int th_vertical_back_pin          = 7;
-        constexpr int th_custom_1_pin               = 8;
-        constexpr int th_custom_2_pin               = 9;
+        constexpr int pwm_custom_0_pin              = 8;
+        constexpr int pwm_custom_1_pin              = 9;
+        constexpr int pwm_custom_2_pin              = A2;
+        constexpr int pwm_custom_3_pin              = A3;
 
         /* manipulator PCA9536 channels */
         constexpr int manip_left_ch     = 0;
@@ -45,8 +47,10 @@ namespace config {
             horizontal_back_right,
             vertical_front,
             vertical_back,
-            custom_1,
-            custom_2
+            pwm_0,
+            pwm_1,
+            pwm_2,
+            pwm_3,
         };
     }
 
@@ -71,6 +75,8 @@ namespace config {
 
         constexpr int ammeter_pin = A0;
         constexpr int voltmeter_pin = A1;
+
+        constexpr double voltage_multiplier = 0.016064;
     } // namespace analog
 
 

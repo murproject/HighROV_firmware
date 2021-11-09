@@ -12,8 +12,7 @@ public:
     static void set_servo(int idx, int angle);
     static void set_thruster(int idx, int power);
     static void set_manipulator(int ch, int power);
-    static void switch_camera(bool state);
-    static void switch_camera();
+    static void set_video_multiplexer(bool state);
     PWMController(const PWMController&) = delete;
 private:
     static PWMController &inst();
@@ -21,7 +20,7 @@ private:
 
     PCA9536 m_pca;
 
-    Servo m_thrusters[8];
+    Servo m_thrusters[10];
     Servo m_servos[2];
 };
 
