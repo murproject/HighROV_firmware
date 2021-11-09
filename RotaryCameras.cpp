@@ -4,8 +4,8 @@
 
 void RotaryCameras::init() {
     auto &data = inst();
-    PWMController::set_servo(config::servos::front, data.angles[0]);
-    PWMController::set_servo(config::servos::back, data.angles[1]);
+    PWMController::set_servo(config::thrusters::servo_front, data.angles[0]);
+    PWMController::set_servo(config::thrusters::servo_back, data.angles[1]);
 }
 
 void RotaryCameras::set_angle(int idx, int angle) {

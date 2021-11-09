@@ -47,6 +47,8 @@ namespace config {
             horizontal_back_right,
             vertical_front,
             vertical_back,
+            servo_front,
+            servo_back,
             pwm_0,
             pwm_1,
             pwm_2,

@@ -78,8 +78,8 @@ void test_peripherals() {
 
     int angle = (counter % 200) > 100 ? 2 : -2;
 
-    RotaryCameras::set_angle(config::servos::front, angle);
-    RotaryCameras::set_angle(config::servos::back, angle);
+    RotaryCameras::set_angle(config::thrusters::servo_front, angle);
+    RotaryCameras::set_angle(config::thrusters::servo_back, angle);
 
     int manip_p = p / 5 >  10 ?  1 :
                   p / 5 < -10 ? -1 : 0;
@@ -138,8 +138,8 @@ void HighROV::run() {
     Networking::read_write_udp(telimetry, control);
     if (!control.debugFlag) {
         Thrusters::update_thrusters(control, telimetry);
-        RotaryCameras::set_angle(0, constrain(control.cameraRotation[0], -1, 1));
-        RotaryCameras::set_angle(1, constrain(control.cameraRotation[1], -1, 1));
+        RotaryCameras::set_angle(config::thrusters::servo_front, constrain(control.cameraRotation[0], -1, 1));
+        RotaryCameras::set_angle(config::thrusters::servo_back, constrain(control.cameraRotation[1], -1, 1));
         RotaryCameras::select_cam(control.cameraIndex == 1 ? true : false);
         Manipulator::set_power(control.manipulatorRotation, control.manipulatorOpenClose);
         SerialUSB.print(control.manipulatorOpenClose); SerialUSB.print("\t");\
