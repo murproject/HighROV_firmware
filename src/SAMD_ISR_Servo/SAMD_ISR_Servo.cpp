@@ -3,7 +3,7 @@
   For :
   - SAMD21-based boards such as Nano-33-IoT, SAMD Zero, Seeeduino XIAO, etc.
   - SAMD51-based boards such as Adafruit Itsy-Bitsy M4, Metro M4, Seeeduino WIO-Terminal, etc.
-  
+
   Written by Khoi Hoang
 
   Built by Khoi Hoang https://github.com/khoih-prog/SAMD_ISR_Servo
@@ -37,7 +37,7 @@ SAMD_ISR_Servo SAMD_ISR_Servos;  // create servo object to control up to 16 serv
 //////////////////////////////////////////////////
 
 void SAMD_ISR_Servo_Handler()
-{ 
+{
   SAMD_ISR_Servos.run();
 }
 
@@ -53,8 +53,8 @@ SAMD_ISR_Servo::SAMD_ISR_Servo()
 void SAMD_ISR_Servo::run()
 {
   static int servoIndex;
-  
-  for (servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)
+
+  for (servoIndex = 0; servoIndex < MAX_ISR_SERVOS; servoIndex++)
   {
     if ( servo[servoIndex].enabled  && (servo[servoIndex].pin <= SAMD_MAX_PIN) )
     {
@@ -85,11 +85,11 @@ void SAMD_ISR_Servo::run()
 int SAMD_ISR_Servo::findFirstFreeSlot()
 {
   // all slots are used
-  if (numServos >= MAX_SERVOS)
+  if (numServos >= MAX_ISR_SERVOS)
     return -1;
 
   // return the first slot with no count (i.e. free)
-  for (int servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)
+  for (int servoIndex = 0; servoIndex < MAX_ISR_SERVOS; servoIndex++)
   {
     if (servo[servoIndex].enabled == false)
     {
@@ -108,7 +108,7 @@ int SAMD_ISR_Servo::findFirstFreeSlot()
 int SAMD_ISR_Servo::setupServo(uint8_t pin, int min, int max)
 {
   int servoIndex;
-    
+
   if (pin > SAMD_MAX_PIN)
     return -1;
 
@@ -116,12 +116,12 @@ int SAMD_ISR_Servo::setupServo(uint8_t pin, int min, int max)
     init();
 
   servoIndex = findFirstFreeSlot();
-  
+
   if (servoIndex < 0)
     return -1;
-    
+
   pinMode(pin, OUTPUT);
-  
+
   servo[servoIndex].pin        = pin;
   servo[servoIndex].min        = min;
   servo[servoIndex].max        = max;
@@ -130,10 +130,10 @@ int SAMD_ISR_Servo::setupServo(uint8_t pin, int min, int max)
   servo[servoIndex].enabled    = true;
 
   numServos++;
- 
+
   ISR_SERVO_LOGDEBUG3("Index =", servoIndex, ", count =", servo[servoIndex].count);
   ISR_SERVO_LOGDEBUG3("min =", servo[servoIndex].min, ", max =", servo[servoIndex].max);
- 
+
   return servoIndex;
 }
 
@@ -141,7 +141,7 @@ int SAMD_ISR_Servo::setupServo(uint8_t pin, int min, int max)
 
 bool SAMD_ISR_Servo::setPosition(unsigned servoIndex, int position)
 {
-  if (servoIndex >= MAX_SERVOS)
+  if (servoIndex >= MAX_ISR_SERVOS)
     return false;
 
   // Updates interval of existing specified servo
@@ -165,7 +165,7 @@ bool SAMD_ISR_Servo::setPosition(unsigned servoIndex, int position)
 // returns last position in degrees if success, or -1 on wrong servoIndex
 int SAMD_ISR_Servo::getPosition(unsigned servoIndex)
 {
-  if (servoIndex >= MAX_SERVOS)
+  if (servoIndex >= MAX_ISR_SERVOS)
     return -1;
 
   // Updates interval of existing specified servo
@@ -189,7 +189,7 @@ int SAMD_ISR_Servo::getPosition(unsigned servoIndex)
 // returns true on success or -1 on wrong servoIndex
 bool SAMD_ISR_Servo::setPulseWidth(unsigned servoIndex, unsigned int pulseWidth)
 {
-  if (servoIndex >= MAX_SERVOS)
+  if (servoIndex >= MAX_ISR_SERVOS)
     return false;
 
   // Updates interval of existing specified servo
@@ -218,7 +218,7 @@ bool SAMD_ISR_Servo::setPulseWidth(unsigned servoIndex, unsigned int pulseWidth)
 // returns pulseWidth in microsecs (within min/max range) if success, or 0 on wrong servoIndex
 unsigned int SAMD_ISR_Servo::getPulseWidth(unsigned servoIndex)
 {
-  if (servoIndex >= MAX_SERVOS)
+  if (servoIndex >= MAX_ISR_SERVOS)
     return 0;
 
   // Updates interval of existing specified servo
@@ -238,7 +238,7 @@ unsigned int SAMD_ISR_Servo::getPulseWidth(unsigned servoIndex)
 
 void SAMD_ISR_Servo::deleteServo(unsigned servoIndex)
 {
-  if ( (numServos == 0) || (servoIndex >= MAX_SERVOS) )
+  if ( (numServos == 0) || (servoIndex >= MAX_ISR_SERVOS) )
   {
     return;
   }
@@ -263,7 +263,7 @@ void SAMD_ISR_Servo::deleteServo(unsigned servoIndex)
 
 bool SAMD_ISR_Servo::isEnabled(unsigned servoIndex)
 {
-  if (servoIndex >= MAX_SERVOS)
+  if (servoIndex >= MAX_ISR_SERVOS)
     return false;
 
   if (servo[servoIndex].pin > SAMD_MAX_PIN)
@@ -281,7 +281,7 @@ bool SAMD_ISR_Servo::isEnabled(unsigned servoIndex)
 
 bool SAMD_ISR_Servo::enable(unsigned servoIndex)
 {
-  if (servoIndex >= MAX_SERVOS)
+  if (servoIndex >= MAX_ISR_SERVOS)
     return false;
 
   if (servo[servoIndex].pin > SAMD_MAX_PIN)
@@ -302,7 +302,7 @@ bool SAMD_ISR_Servo::enable(unsigned servoIndex)
 
 bool SAMD_ISR_Servo::disable(unsigned servoIndex)
 {
-  if (servoIndex >= MAX_SERVOS)
+  if (servoIndex >= MAX_ISR_SERVOS)
     return false;
 
   if (servo[servoIndex].pin > SAMD_MAX_PIN)
@@ -319,9 +319,9 @@ void SAMD_ISR_Servo::enableAll()
 {
   // Enable all servos with a enabled and count != 0 (has PWM) and good pin
 
-  for (int servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)
+  for (int servoIndex = 0; servoIndex < MAX_ISR_SERVOS; servoIndex++)
   {
-    if ( (servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO ) && !servo[servoIndex].enabled 
+    if ( (servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO ) && !servo[servoIndex].enabled
       && (servo[servoIndex].pin <= SAMD_MAX_PIN) )
     {
       servo[servoIndex].enabled = true;
@@ -334,7 +334,7 @@ void SAMD_ISR_Servo::enableAll()
 void SAMD_ISR_Servo::disableAll()
 {
   // Disable all servos
-  for (int servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)
+  for (int servoIndex = 0; servoIndex < MAX_ISR_SERVOS; servoIndex++)
   {
     servo[servoIndex].enabled = false;
   }
@@ -344,7 +344,7 @@ void SAMD_ISR_Servo::disableAll()
 
 bool SAMD_ISR_Servo::toggle(unsigned servoIndex)
 {
-  if (servoIndex >= MAX_SERVOS)
+  if (servoIndex >= MAX_ISR_SERVOS)
     return false;
 
   servo[servoIndex].enabled = !servo[servoIndex].enabled;

@@ -18,10 +18,14 @@ namespace config {
         constexpr int th_horizontal_back_right_pin  = 5;
         constexpr int th_vertical_front_pin         = 6;
         constexpr int th_vertical_back_pin          = 7;
-        constexpr int pwm_custom_0_pin              = 8;
-        constexpr int pwm_custom_1_pin              = 9;
-        constexpr int pwm_custom_2_pin              = A2;
-        constexpr int pwm_custom_3_pin              = A3;
+
+        /* additional custom thrusters */
+        constexpr int th_custom_0_pin               = 8;
+        constexpr int th_custom_1_pin               = 9;
+
+        /* custom PWM pins */
+        constexpr int pwm_custom_a2_pin             = A2;
+        constexpr int pwm_custom_a3_pin             = A3;
 
         /* manipulator PCA9536 channels */
         constexpr int manip_left_ch     = 0;
@@ -47,12 +51,8 @@ namespace config {
             horizontal_back_right,
             vertical_front,
             vertical_back,
-            servo_front,
-            servo_back,
-            pwm_0,
-            pwm_1,
-            pwm_2,
-            pwm_3,
+            custom_0,
+            custom_1,
         };
     }
 
@@ -60,7 +60,9 @@ namespace config {
     namespace servos {
         enum servos {
             front = 0,
-            back = 1,
+            back,
+            pwm_a2,
+            pwm_a3,
         };
     }
 

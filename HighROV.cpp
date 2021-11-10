@@ -43,19 +43,19 @@ void HighROV::init() {
 }
 
 void debug(rov::RovControl &ctrl) {
-    using namespace config::thrusters;
+    using namespace config;
 
-    PWMController::set_thruster(horizontal_front_left,  ctrl.thrusterPower[0]);
-    PWMController::set_thruster(horizontal_front_right, ctrl.thrusterPower[1]);
-    PWMController::set_thruster(horizontal_back_left,   ctrl.thrusterPower[2]);
-    PWMController::set_thruster(horizontal_back_right,  ctrl.thrusterPower[3]);
-    PWMController::set_thruster(vertical_front,         ctrl.thrusterPower[4]);
-    PWMController::set_thruster(vertical_back,          ctrl.thrusterPower[5]);
+    PWMController::set_thruster(thrusters::horizontal_front_left,  ctrl.thrusterPower[0]);
+    PWMController::set_thruster(thrusters::horizontal_front_right, ctrl.thrusterPower[1]);
+    PWMController::set_thruster(thrusters::horizontal_back_left,   ctrl.thrusterPower[2]);
+    PWMController::set_thruster(thrusters::horizontal_back_right,  ctrl.thrusterPower[3]);
+    PWMController::set_thruster(thrusters::vertical_front,         ctrl.thrusterPower[4]);
+    PWMController::set_thruster(thrusters::vertical_back,          ctrl.thrusterPower[5]);
 
-    PWMController::set_thruster(pwm_0, ctrl.thrusterPower[6]);
-    PWMController::set_thruster(pwm_1, ctrl.thrusterPower[7]);
-    PWMController::set_thruster(pwm_2, ctrl.thrusterPower[8]);
-    PWMController::set_thruster(pwm_3, ctrl.thrusterPower[9]);
+    PWMController::set_servo_power(servos::front,  ctrl.thrusterPower[6]);
+    PWMController::set_servo_power(servos::back,   ctrl.thrusterPower[7]);
+    PWMController::set_servo_power(servos::pwm_a2, ctrl.thrusterPower[8]);
+    PWMController::set_servo_power(servos::pwm_a3, ctrl.thrusterPower[9]);
 }
 
 void test_peripherals() {
@@ -70,16 +70,15 @@ void test_peripherals() {
     PWMController::set_thruster(config::thrusters::horizontal_back_right, p);
     PWMController::set_thruster(config::thrusters::vertical_front, p);
     PWMController::set_thruster(config::thrusters::vertical_back, p);
-
-    PWMController::set_thruster(config::thrusters::pwm_0, p);
-    PWMController::set_thruster(config::thrusters::pwm_1, p);
-    PWMController::set_thruster(config::thrusters::pwm_2, p);
-    PWMController::set_thruster(config::thrusters::pwm_3, p);
+    PWMController::set_thruster(config::thrusters::custom_0, p);
+    PWMController::set_thruster(config::thrusters::custom_1, p);
 
     int angle = (counter % 200) > 100 ? 2 : -2;
 
-    RotaryCameras::set_angle(config::thrusters::servo_front, angle);
-    RotaryCameras::set_angle(config::thrusters::servo_back, angle);
+    PWMController::set_servo_angle(config::servos::front, angle);
+    PWMController::set_servo_angle(config::servos::back, angle);
+    PWMController::set_servo_angle(config::servos::pwm_a2, angle);
+    PWMController::set_servo_angle(config::servos::pwm_a3, angle);
 
     int manip_p = p / 5 >  10 ?  1 :
                   p / 5 < -10 ? -1 : 0;
@@ -138,8 +137,8 @@ void HighROV::run() {
     Networking::read_write_udp(telimetry, control);
     if (!control.debugFlag) {
         Thrusters::update_thrusters(control, telimetry);
-        RotaryCameras::set_angle(config::thrusters::servo_front, constrain(control.cameraRotation[0], -1, 1));
-        RotaryCameras::set_angle(config::thrusters::servo_back, constrain(control.cameraRotation[1], -1, 1));
+        RotaryCameras::set_angle(config::servos::front, constrain(control.cameraRotation[0], -1, 1));
+        RotaryCameras::set_angle(config::servos::back, constrain(control.cameraRotation[1], -1, 1));
         RotaryCameras::select_cam(control.cameraIndex == 1 ? true : false);
         Manipulator::set_power(control.manipulatorRotation, control.manipulatorOpenClose);
         SerialUSB.print(control.manipulatorOpenClose); SerialUSB.print("\t");\

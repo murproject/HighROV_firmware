@@ -9,6 +9,10 @@ void PWMController::init() {
 
     auto &pwm = inst();
 
+    /* SAMD ISR Servos init */
+
+    delay(5000);
+
     SAMD_ISR_Servos.useTimer(TIMER_TCC);
 
     pwm.m_pins[thrusters::horizontal_front_left]  = th_horizontal_front_left_pin;
@@ -17,23 +21,36 @@ void PWMController::init() {
     pwm.m_pins[thrusters::horizontal_back_right]  = th_horizontal_back_right_pin;
     pwm.m_pins[thrusters::vertical_front]         = th_vertical_front_pin;
     pwm.m_pins[thrusters::vertical_back]          = th_vertical_back_pin;
-    pwm.m_pins[thrusters::servo_front]            = servo_front_pin;
-    pwm.m_pins[thrusters::servo_back]             = servo_back_pin;
-    pwm.m_pins[thrusters::pwm_0]                  = pwm_custom_0_pin;
-    pwm.m_pins[thrusters::pwm_1]                  = pwm_custom_1_pin;
-    pwm.m_pins[thrusters::pwm_2]                  = pwm_custom_2_pin;
-    pwm.m_pins[thrusters::pwm_3]                  = pwm_custom_3_pin;
+    pwm.m_pins[thrusters::custom_0]               = th_custom_0_pin;
+    pwm.m_pins[thrusters::custom_1]               = th_custom_1_pin;
 
-
-    for (int i = 0; i < 12; i++) {
-        pwm.m_servos[i] = SAMD_ISR_Servos.setupServo(pwm.m_pins[i], pulse_min, pulse_max);
+    for (int i = 0; i < 8; i++) {
+        pwm.m_isr_servos[i] = SAMD_ISR_Servos.setupServo(pwm.m_pins[i], pulse_min, pulse_max);
+        SerialUSB.println(pwm.m_isr_servos[i]);
+        delay(200);
     }
 
     SAMD_ISR_Servos.setReadyToRun();
 
-    for (int i = 0; i < 12; i++) {
-        SAMD_ISR_Servos.setPulseWidth(pwm.m_servos[i], pulse_med);
+    for (int i = 0; i < 8; i++) {
+        SAMD_ISR_Servos.setPulseWidth(pwm.m_isr_servos[i], pulse_med);
     }
+
+    delay(5000);
+
+    /* Arduino Servos init */
+
+    pwm.m_servos[config::servos::front].attach(servo_front_pin);
+    pwm.m_servos[config::servos::back].attach(servo_back_pin);
+    pwm.m_servos[config::servos::pwm_a2].attach(pwm_custom_a2_pin);
+    pwm.m_servos[config::servos::pwm_a3].attach(pwm_custom_a3_pin);
+
+    pwm.m_servos[config::servos::front].writeMicroseconds(1500);
+    pwm.m_servos[config::servos::back].writeMicroseconds(1500);
+    pwm.m_servos[config::servos::pwm_a2].writeMicroseconds(1500);
+    pwm.m_servos[config::servos::pwm_a3].writeMicroseconds(1500);
+
+    /* I2C PCA init */
 
     if (pwm.m_pca.begin() == false) {
         SerialUSB.println("ERROR: PCA9536 not detected! Check I2C connection.");
@@ -49,19 +66,22 @@ void PWMController::init() {
     delay(10);
 }
 
-void PWMController::set_servo(int idx, int angle) {
+void PWMController::set_servo_angle(int idx, int angle) {
     int pulse = map(angle, 0, 180, 1010, 1990);
     pulse = constrain(pulse, 1010, 1990);
-    SAMD_ISR_Servos.setPulseWidth(inst().m_servos[idx], pulse);
-    // SAMD_ISR_Servos.setPulseWidth(inst().m_pins[idx], pulse);
-    // inst().m_servos[idx].write(angle);
+    inst().m_servos[idx].writeMicroseconds(pulse);
+}
+
+void PWMController::set_servo_power(int idx, int power) {
+    int pulse = map(power, -100, 100, 1010, 1990);
+    pulse = constrain(pulse, 1010, 1990);
+    inst().m_servos[idx].writeMicroseconds(pulse);
 }
 
 void PWMController::set_thruster(int idx, int power) {
     int pulse = map(power, -100, 100, 1010, 1990);
     pulse = constrain(pulse, 1010, 1990);
-    // inst().m_thrusters[idx].writeMicroseconds(pulse);
-    SAMD_ISR_Servos.setPulseWidth(inst().m_servos[idx], pulse);
+    SAMD_ISR_Servos.setPulseWidth(inst().m_isr_servos[idx], pulse);
 }
 
 void PWMController::set_manipulator(int ch, int power) {

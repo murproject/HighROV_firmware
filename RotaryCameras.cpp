@@ -4,8 +4,8 @@
 
 void RotaryCameras::init() {
     auto &data = inst();
-    PWMController::set_servo(config::thrusters::servo_front, data.angles[0]);
-    PWMController::set_servo(config::thrusters::servo_back, data.angles[1]);
+    PWMController::set_servo_angle(config::servos::front, data.angles[0]);
+    PWMController::set_servo_angle(config::servos::back, data.angles[1]);
 }
 
 void RotaryCameras::set_angle(int idx, int angle) {
@@ -16,7 +16,7 @@ void RotaryCameras::set_angle(int idx, int angle) {
         data.times_update[idx] = millis();
         // data.angles[idx] += angle;
         data.angles[idx] = constrain(data.angles[idx] + angle, 0, 180);
-        PWMController::set_servo(servo_idx, data.angles[servo_idx]);
+        PWMController::set_servo_angle(servo_idx, data.angles[servo_idx]);
     }
 }
 

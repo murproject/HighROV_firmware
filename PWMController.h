@@ -2,13 +2,14 @@
 
 #include <Wire.h>
 #include <SparkFun_PCA9536_Arduino_Library.h>
-// #include <Servo.h>
+#include <Servo.h>
 
 class PWMController
 {
 public:
     static void init();
-    static void set_servo(int idx, int angle);
+    static void set_servo_angle(int idx, int angle);
+    static void set_servo_power(int idx, int power);
     static void set_thruster(int idx, int power);
     static void set_manipulator(int ch, int power);
     static void set_video_multiplexer(bool state);
@@ -23,10 +24,10 @@ private:
 
     PCA9536 m_pca;
 
-    int m_pins[12];
-    int m_servos[12];
+    int m_pins[8];
+    int m_isr_servos[8];
 
     // Servo m_thrusters[10];
-    // Servo m_servos[2];
+    Servo m_servos[4];
 };
 

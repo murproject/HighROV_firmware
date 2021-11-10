@@ -94,7 +94,7 @@ class SAMD_ISR_Servo
 
   public:
     // maximum number of servos
-    const static int MAX_SERVOS = 16;
+    const static int MAX_ISR_SERVOS = 16;
 
     // constructor
     SAMD_ISR_Servo();
@@ -196,7 +196,7 @@ class SAMD_ISR_Servo
 
     // returns the number of available servos
     int getNumAvailableServos() {
-      return MAX_SERVOS - numServos;
+      return MAX_ISR_SERVOS - numServos;
     };
 
   private:
@@ -205,7 +205,7 @@ class SAMD_ISR_Servo
     {
       SAMD_ITimer = new SAMDFastTimer(_timerNo);
 
-      for (int servoIndex = 0; servoIndex < MAX_SERVOS; servoIndex++)
+      for (int servoIndex = 0; servoIndex < MAX_ISR_SERVOS; servoIndex++)
       {
         memset((void*) &servo[servoIndex], 0, sizeof (servo_t));
         servo[servoIndex].count    = 0;
@@ -239,7 +239,7 @@ class SAMD_ISR_Servo
 
     //////////////////////////////////////////////////
 
-    volatile servo_t servo[MAX_SERVOS];
+    volatile servo_t servo[MAX_ISR_SERVOS];
 
     // actual number of servos in use (-1 means uninitialized)
     volatile int numServos;
