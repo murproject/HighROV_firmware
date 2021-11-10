@@ -20,19 +20,8 @@ namespace config {
         constexpr int th_vertical_back_pin          = 7;
 
         /* additional custom thrusters */
-        constexpr int th_custom_0_pin               = 8;
-        constexpr int th_custom_1_pin               = 9;
-
-        /* custom PWM pins */
-        constexpr int pwm_custom_a2_pin             = A2;
-        constexpr int pwm_custom_a3_pin             = A3;
-
-        /* manipulator PCA9536 channels */
-        constexpr int manip_left_ch     = 0;
-        constexpr int manip_right_ch    = 1;
-
-        constexpr int manip_grab_ch     = 2;
-        constexpr int manip_relese_ch   = 3;
+        constexpr int th_custom_0_pin   = 8;
+        constexpr int th_custom_1_pin   = 9;
 
         /* cam servos pins */
         constexpr int servo_front_pin   = A4;
@@ -40,6 +29,17 @@ namespace config {
 
         /* video multiplexer */
         constexpr int cam_select_pin    = 10;
+
+        /* custom PWM pins */
+        constexpr int pwm_custom_a2_pin = A2;
+        constexpr int pwm_custom_a3_pin = A3;
+
+        /* manipulator PCA9536 channels */
+        constexpr int manip_left_ch     = 0;
+        constexpr int manip_right_ch    = 1;
+
+        constexpr int manip_grab_ch     = 2;
+        constexpr int manip_relese_ch   = 3;
     }
 
     /* indices of thursters */

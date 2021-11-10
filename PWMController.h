@@ -24,10 +24,11 @@ private:
 
     PCA9536 m_pca;
 
+    /* controlled by SAMD_ISR_SERVO lib: */
     int m_pins[8];
     int m_isr_servos[8];
 
-    // Servo m_thrusters[10];
+    /* controlled by Arduino Servo.h lib:*/
     Servo m_servos[4];
 };
 
