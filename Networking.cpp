@@ -14,8 +14,7 @@ void Networking::read_write_udp(rov::RovTelimetry &tel, rov::RovControl &ctrl) {
     uint8_t buffer[buffer_size];
     int size = inst().read(buffer, buffer_size);
 
-    if (size) {
-
+    if (size > 0) {
         auto error = ctrl.fromRovControlMsg(buffer, size);
         SerialUSB.println(ctrl.fromErrorToString(error));
 
@@ -24,7 +23,7 @@ void Networking::read_write_udp(rov::RovTelimetry &tel, rov::RovControl &ctrl) {
         } else {
             size = tel.toRovTelemetryMsgV1(buffer);
         }
-        // tel.ammeter += 1;
+        // tel.ammeter += 1; // TODO: delete
         inst().write(buffer, size);
 
         unsigned long curTimestamp = millis();

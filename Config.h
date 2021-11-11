@@ -3,11 +3,11 @@
 #include "variant.h"
 
 namespace config {
-    namespace wifi {
-        constexpr char ssid[] = "HighROV";
-        constexpr char pass[] = "robocenter";
-        constexpr char pass_for_update[] = "1";
-    }
+    // namespace wifi {
+    //     constexpr char ssid[] = "HighROV";
+    //     constexpr char pass[] = "robocenter";
+    //     constexpr char pass_for_update[] = "1";
+    // }
 
     /* pinout */
     namespace pwm {
@@ -42,7 +42,7 @@ namespace config {
         constexpr int manip_relese_ch   = 3;
     }
 
-    /* indices of thursters */
+    /* indices of thursters (controlled by SAMD_ISR_SERVO) */
     namespace thrusters {
         enum thrusters {
             horizontal_front_left = 0,
@@ -56,7 +56,7 @@ namespace config {
         };
     }
 
-    /* indices of servos */
+    /* indices of servos (controlled by Servo.h) */
     namespace servos {
         enum servos {
             front = 0,

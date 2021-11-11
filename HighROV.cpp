@@ -1,5 +1,4 @@
 #include "HighROV.h"
-// #include "WiFiUpdater.h"
 #include "PWMController.h"
 #include "Networking.h"
 #include "Data.h"
@@ -20,16 +19,6 @@ void HighROV::init() {
     SerialUSB.println("HighROV init! (SerialUSB)");
     Serial.println("HighROV init");
 
-    // pinMode(PIN_PA13, OUTPUT);
-
-    // while (true) {
-    //     digitalWrite(PIN_PA13, HIGH);
-    //     delay(1);
-    //     digitalWrite(PIN_PA13, LOW);
-    //     delay(1);
-    // }
-
-    // WiFiUpdater::init();
     PWMController::init();
     Networking::init();
     Thrusters::init();
@@ -84,18 +73,6 @@ void test_peripherals() {
                   p / 5 < -10 ? -1 : 0;
 
     Manipulator::set_power(manip_p, manip_p);
-
-    // if (counter % 10 == 0) {
-    //     SerialUSB.print(p);
-    //     SerialUSB.print("\t");
-    //     SerialUSB.println(manip_p);/
-    // }
-
-    // SerialUSB.println(p);
-
-    // PIN_PA13;
-
-    // delay(30);
 }
 
 void HighROV::run() {

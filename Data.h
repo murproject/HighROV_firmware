@@ -78,6 +78,7 @@ namespace rov {
         int8_t manipulatorOpenClose = 0; //! -1 close/+1 open;
         uint8_t regulators = 0; //! 1st bit - depth;
         float desiredDepth = 0.0f;
+        float desiredYaw = 0.0f;
 
         // v2 begin
         uint8_t cameraIndex = 0;
@@ -157,9 +158,10 @@ namespace rov {
             read_bytes(msg, i, manipulatorOpenClose);
             read_bytes(msg, i, regulators);
             read_bytes(msg, i, desiredDepth);
+            read_bytes(msg, i, desiredYaw);
             read_bytes(msg, i, cameraIndex);
 
-            SerialUSB.print("i: ");
+            SerialUSB.print("i: "); // TODO: remove debug output
             SerialUSB.print(i);
             SerialUSB.print(", size:");
             SerialUSB.print(size);
@@ -276,7 +278,6 @@ namespace rov {
 
             // SerialUSB.print("telemetry crc: "); // todo
             // SerialUSB.println(crc, HEX);
-
 
             return i;
         }
