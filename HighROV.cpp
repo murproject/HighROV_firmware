@@ -17,7 +17,8 @@ rov::RovTelimetry telimetry;
 
 void HighROV::init() {
     SerialUSB.println("HighROV init! (SerialUSB)");
-    Serial.println("HighROV init");
+
+    pinMode(LED_BUILTIN, OUTPUT);
 
     PWMController::init();
     Networking::init();
@@ -104,10 +105,13 @@ void HighROV::run() {
 
     // WiFiUpdater::check_updates();
 
+    // digitalWrite(LED_BUILTIN, millis() % 100 < 50);
+
     telimetry.yaw = IMUSensor::getYaw();
     telimetry.roll = IMUSensor::getRoll();
     telimetry.pitch = IMUSensor::getPitch();
-    telimetry.depth = DepthSensor::get_depth();
+    telimetry.depth = DepthSensor::getDepth();
+    // TODO: telimetry.temperature = DepthSensor::getTemp();
     telimetry.voltmeter = AnalogSensors::getVoltage();
     telimetry.cameraIndex = RotaryCameras::get_cam_index();
 
@@ -118,18 +122,23 @@ void HighROV::run() {
         RotaryCameras::set_angle(config::servos::back, constrain(control.cameraRotation[1], -1, 1));
         RotaryCameras::select_cam(control.cameraIndex == 1 ? true : false);
         Manipulator::set_power(control.manipulatorRotation, control.manipulatorOpenClose);
-        SerialUSB.print(control.manipulatorOpenClose); SerialUSB.print("\t");\
-        SerialUSB.print(control.regulators); SerialUSB.print("\t");
-        SerialUSB.print(control.desiredDepth); SerialUSB.print("\t");
-        SerialUSB.print(control.cameraIndex); SerialUSB.print("\t");
-        SerialUSB.println(" ");
+        // SerialUSB.print(control.manipulatorOpenClose); SerialUSB.print("\t");\
+        // SerialUSB.print(control.regulators); SerialUSB.print("\t");
+        // SerialUSB.print(control.desiredDepth); SerialUSB.print("\t");
+        // SerialUSB.print(control.cameraIndex); SerialUSB.print("\t");
+        // SerialUSB.println(" ");
     } else {
         // SerialUSB.println("debugging!");
         debug(control);
     }
 
-    delay(20);
+    if (DepthSensor::getUpdateStatus() == true) {
+        analogWrite(LED_BUILTIN, sin(millis() * 0.01) * 127 + 127);
+    } else {
+        analogWrite(LED_BUILTIN, 255);
+    }
 
+    delay(20);
 
     // imu.processImu();
     // telimetry.yaw = imu.get_yaw();

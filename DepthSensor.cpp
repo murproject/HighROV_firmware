@@ -2,42 +2,67 @@
 #include "DepthSensor.h"
 #include "Wire.h"
 
-void DepthSensor::init() {
+bool DepthSensor::init() {
     auto &ds = inst();
     bool ok = ds.sensor.init();
 
     if (!ok) {
         SerialUSB.println("Depth sensor init failed!"); // TODO //
-        return;
+        return false;
     }
 
     ds.sensor.setModel(MS5837::MS5837_30BA);
     ds.sensor.setFluidDensity(997); // kg/m^3 (freshwater, 1029 for seawater)
+    return true;
 }
 
-float DepthSensor::get_depth() {
+bool DepthSensor::getUpdateStatus() {
     auto &ds = inst();
+    return ds.m_update_status;
+}
+
+bool DepthSensor::update() {
+    auto &ds = inst();
+    bool status = false; // false = error, true = ok
+
     if ((millis() - ds.time_update) > 200) {
         ds.sensor.read();
         ds.time_update = millis();
+
         if (abs(ds.sensor.depth()) < 150) {
-            ds.depth = ds.sensor.depth();
+            status = true;
+            ds.m_depth = ds.sensor.depth();
+            ds.m_temp = ds.sensor.temperature();
         } else { // don't accept value if value is too big (probably corrupted data)
-            SerialUSB.println("\n\nDepth sensor fatality.\n\n"); // TODO //
+            status = false;
+            // SerialUSB.println("\n\nDepth sensor fatality.\n\n"); // TODO //
             Wire.end();
             Wire.begin(); // TODO?
             Wire.setTimeout(1000);
             Wire.setClock(10000);
-
             init();
         }
+
+        ds.m_update_status = status;
     }
 
-    if ((millis() - ds.time_update) > 5000) {
-        // init(); // TODO; delete?
-    }
-    return ds.depth;
+    return status;
 }
+
+float DepthSensor::getDepth() {
+    update();
+
+    auto &ds = inst();
+    return ds.m_depth;
+}
+
+float DepthSensor::getTemp() {
+    update();
+
+    auto &ds = inst();
+    return ds.m_temp;
+}
+
 
 DepthSensor & DepthSensor::inst() {
     static DepthSensor ds;
