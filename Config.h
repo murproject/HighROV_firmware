@@ -3,12 +3,6 @@
 #include "variant.h"
 
 namespace config {
-    // namespace wifi {
-    //     constexpr char ssid[] = "HighROV";
-    //     constexpr char pass[] = "robocenter";
-    //     constexpr char pass_for_update[] = "1";
-    // }
-
     /* pinout */
     namespace pwm {
         /* thrusters */
@@ -75,13 +69,11 @@ namespace config {
     }
 
     namespace analog {
-        enum ammeter_types {}; // TODO: should support different ammeter types!
-
         constexpr int ammeter_pin = A0;
         constexpr int voltmeter_pin = A1;
 
-        constexpr double voltage_multiplier = 0.016064;
+        constexpr double voltage_multiplier  = 0.016064;
+        constexpr double amperage_multiplier = 0.077821;
+        constexpr double amperage_deflection = 512.0;
     } // namespace analog
-
-
 }
