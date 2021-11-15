@@ -83,6 +83,34 @@ namespace rov {
         // v2 begin
         uint8_t cameraIndex = 0;
 
+        void resetData() {
+            header = 0;
+            version = 0;
+            axisX = 0;
+            axisY = 0;
+            axisZ = 0;
+            axisW = 0;
+            debugFlag = 0;
+            thrusterPower[0] = 0;
+            thrusterPower[1] = 0;
+            thrusterPower[2] = 0;
+            thrusterPower[3] = 0;
+            thrusterPower[4] = 0;
+            thrusterPower[5] = 0;
+            thrusterPower[6] = 0;
+            thrusterPower[7] = 0;
+            thrusterPower[8] = 0;
+            thrusterPower[9] = 0;
+            manipulatorRotation = 0;
+            cameraRotation[0] = 0;
+            cameraRotation[1] = 0;
+            manipulatorOpenClose = 0;
+            regulators = 0;
+            desiredDepth = 0;
+            desiredYaw = 0;
+            cameraIndex = 0;
+        }
+
         RovControlErrorCode fromRovControlMsg(const uint8_t *msg, unsigned long size) {
             size_t i = 0;
             read_bytes(msg, i, header);
@@ -128,6 +156,7 @@ namespace rov {
 
             int16_t currentCrc = calculateCRC((const char *)msg, i);
             if (crc != currentCrc) {
+                resetData();
                 return RovControlErrorCode::WrongCrc;
             }
             return RovControlErrorCode::NoError;
@@ -161,11 +190,11 @@ namespace rov {
             read_bytes(msg, i, desiredYaw);
             read_bytes(msg, i, cameraIndex);
 
-            SerialUSB.print("i: "); // TODO: remove debug output
-            SerialUSB.print(i);
-            SerialUSB.print(", size:");
-            SerialUSB.print(size);
-            SerialUSB.println();
+            // SerialUSB.print("i: "); // TODO: remove debug output
+            // SerialUSB.print(i);
+            // SerialUSB.print(", size:");
+            // SerialUSB.print(size);
+            // SerialUSB.println();
             // i += 1;
 
             uint16_t currentCrc = calculateCRC((const char *)msg, i);
@@ -176,28 +205,24 @@ namespace rov {
 
             prvt::swap_endian_for(*this);
 
-            SerialUSB.print("received crc: ");
-            SerialUSB.println(crc, HEX);
-
-            // int16_t currentCrc = prvt::swap_endian<int16_t>(calculateCRC((const char *)msg, i));
-
-            SerialUSB.print("calculated crc: ");
-            SerialUSB.println(currentCrc, HEX);
-
-            SerialUSB.print("i: ");
-            SerialUSB.print(i);
-            SerialUSB.print(", size:");
-            SerialUSB.print(size);
-            SerialUSB.println();
-
-            for (int i = 0; i < size; i++) {
-                SerialUSB.print(msg[i], HEX);
-                SerialUSB.print(" ");
-            }
-
-            SerialUSB.println(" ");
+            // SerialUSB.print("received crc: ");
+            // SerialUSB.println(crc, HEX);
+            // // int16_t currentCrc = prvt::swap_endian<int16_t>(calculateCRC((const char *)msg, i));
+            // SerialUSB.print("calculated crc: ");
+            // SerialUSB.println(currentCrc, HEX);
+            // SerialUSB.print("i: ");
+            // SerialUSB.print(i);
+            // SerialUSB.print(", size:");
+            // SerialUSB.print(size);
+            // SerialUSB.println();
+            // for (int i = 0; i < size; i++) {
+            //     SerialUSB.print(msg[i], HEX);
+            //     SerialUSB.print(" ");
+            // }
+            // SerialUSB.println(" ");
 
             if (crc != currentCrc) {
+                resetData();
                 return RovControlErrorCode::WrongCrc;
             }
             return RovControlErrorCode::NoError;
