@@ -26,7 +26,6 @@ void Thrusters::update_thrusters(rov::RovControl &ctrl, rov::RovTelimetry & tel)
         const int16_t w = ctrl.axisW;
         const int16_t z = ctrl.axisZ;
 
-        // TODO: modify axes!
         PWMController::set_thruster(horizontal_front_left,  constrain(data.directions[0] * (y + x + w), -100, 100));
         PWMController::set_thruster(horizontal_front_right, constrain(data.directions[1] * (y - x - w), -100, 100));
         PWMController::set_thruster(horizontal_back_left,   constrain(data.directions[2] * (y - x + w), -100, 100));

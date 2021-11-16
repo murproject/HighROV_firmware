@@ -190,13 +190,6 @@ namespace rov {
             read_bytes(msg, i, desiredYaw);
             read_bytes(msg, i, cameraIndex);
 
-            // SerialUSB.print("i: "); // TODO: remove debug output
-            // SerialUSB.print(i);
-            // SerialUSB.print(", size:");
-            // SerialUSB.print(size);
-            // SerialUSB.println();
-            // i += 1;
-
             uint16_t currentCrc = calculateCRC((const char *)msg, i);
 
             uint16_t crc = 0;
@@ -204,22 +197,6 @@ namespace rov {
             crc = prvt::swap_endian<uint16_t>(crc);
 
             prvt::swap_endian_for(*this);
-
-            // SerialUSB.print("received crc: ");
-            // SerialUSB.println(crc, HEX);
-            // // int16_t currentCrc = prvt::swap_endian<int16_t>(calculateCRC((const char *)msg, i));
-            // SerialUSB.print("calculated crc: ");
-            // SerialUSB.println(currentCrc, HEX);
-            // SerialUSB.print("i: ");
-            // SerialUSB.print(i);
-            // SerialUSB.print(", size:");
-            // SerialUSB.print(size);
-            // SerialUSB.println();
-            // for (int i = 0; i < size; i++) {
-            //     SerialUSB.print(msg[i], HEX);
-            //     SerialUSB.print(" ");
-            // }
-            // SerialUSB.println(" ");
 
             if (crc != currentCrc) {
                 resetData();
@@ -302,9 +279,6 @@ namespace rov {
 
             uint16_t crc = prvt::swap_endian<int16_t>(calculateCRC((const char *)msg, i));
             write_bytes(msg, i, crc);
-
-            // SerialUSB.print("telemetry crc: "); // todo
-            // SerialUSB.println(crc, HEX);
 
             return i;
         }

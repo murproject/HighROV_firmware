@@ -7,7 +7,7 @@ bool DepthSensor::init() {
     bool ok = ds.sensor.init();
 
     if (!ok) {
-        SerialUSB.println("Depth sensor init failed!"); // TODO //
+        SerialUSB.println("Depth sensor init failed!");
         return false;
     }
 
@@ -34,10 +34,12 @@ bool DepthSensor::update() {
             ds.m_depth = ds.sensor.depth();
             ds.m_temp = ds.sensor.temperature();
         } else { // don't accept value if value is too big (probably corrupted data)
+            // SerialUSB.println("\n\nDepth sensor read error.\n\n");
             status = false;
-            // SerialUSB.println("\n\nDepth sensor fatality.\n\n"); // TODO //
+
+            // trying to reset I2C and init sensor again.
             Wire.end();
-            Wire.begin(); // TODO?
+            Wire.begin();
             Wire.setTimeout(1000);
             Wire.setClock(10000);
             init();
