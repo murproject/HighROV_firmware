@@ -79,16 +79,13 @@ void PWMController::set_thruster(int idx, int power) {
 }
 
 void PWMController::set_manipulator(int ch, int power) {
-    PinStatus state = LOW;
+    int state = LOW;
 
     if (abs(power) >= 50) {
         state = HIGH;
     }
 
     inst().m_pca.write(ch, state);
-
-    /* TODO: try to emulate PWM on this chip to set manipulator power level */
-    // int16_t pulse = map(abs(power), 0, 100, 0, 4096);
 }
 
 void PWMController::set_video_multiplexer(bool state) {
