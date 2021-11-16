@@ -49,7 +49,6 @@ int Networking::read(uint8_t * buffer, int size) {
     int packetSize = Udp.parsePacket();
 
     if (packetSize) {
-        Serial.println(packetSize);
         Udp.read(buffer, size);
         return packetSize;
     }
