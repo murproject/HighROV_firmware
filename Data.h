@@ -255,6 +255,7 @@ namespace rov {
 
         // v2 begin
         int8_t cameraIndex = 0; //! 0 / 1 video multiplexer
+        float temperature = 0.0f;
 
         size_t toRovTelemetryMsgV1(uint8_t *msg) {
             size_t i = 0;
@@ -297,6 +298,7 @@ namespace rov {
             write_bytes(msg, i, rt.manipulatorState);
 
             write_bytes(msg, i, rt.cameraIndex);
+            write_bytes(msg, i, rt.temperature);
 
             uint16_t crc = prvt::swap_endian<int16_t>(calculateCRC((const char *)msg, i));
             write_bytes(msg, i, crc);

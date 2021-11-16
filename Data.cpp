@@ -47,6 +47,7 @@ void rov::prvt::swap_endian_for(RovTelimetry & rt) {
     rt.depth = swap_endian(rt.depth);
 
     rt.cameraIndex = swap_endian(rt.cameraIndex);
+    rt.temperature = swap_endian(rt.temperature);
 }
 
 void rov::prvt::swap_endian_for(RovHello & rh) {
