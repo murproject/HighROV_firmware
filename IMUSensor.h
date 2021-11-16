@@ -67,7 +67,6 @@ public:
     IMUSensor();
     static void init();
     static void update();
-    // void commit(RovTelimetry & tel_);
     static float getPitch();
     static float getRoll();
     static float getYaw();

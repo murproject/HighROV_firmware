@@ -61,12 +61,6 @@ uint32_t IMUSensor::packetDecode(uint8_t c)
         break;
     case kStatus_LenHigh:
         RxPkt.payload_len |= (c << 8);
-        // SerialUSB.print("[PAYLOD LEN: ");
-        // SerialUSB.print(RxPkt.payload_len, DEC);
-        // SerialUSB.print("] \t");
-        // if (RxPkt.payload_len != 35) {
-        //     SerialUSB.print("\n\n >> PAYLOAD LEN is suspicious! <<\n\n");
-        // }
         crc_header[3] = c;
         status = kStatus_CRCLow;
         break;
@@ -85,61 +79,28 @@ uint32_t IMUSensor::packetDecode(uint8_t c)
             status = kStatus_Idle;
             RxPkt.ofs = 0;
             CRCCalculated = 0;
-            // SerialUSB.print("[OVERFLOW PREVENTED]");
             break;
         }
 
         RxPkt.buf[RxPkt.ofs++] = c;
 
-        // if(RxPkt.type == 0xA7 && RxPkt.ofs >= 8)
-        // {
-        //     RxPkt.payload_len = 8;
-        //     status = kStatus_Idle;
-        // }
-
         if (RxPkt.ofs >= RxPkt.payload_len && RxPkt.type == 0xA5)
         {
-            // SerialImu.flush();
-            /* calculate CRC */
             crc16_update(&CRCCalculated, crc_header, 4);
             crc16_update(&CRCCalculated, RxPkt.buf, RxPkt.ofs);
 
             /* CRC match */
             if (CRCCalculated == CRCReceived)
             {
-                // SerialUSB.print("[DONE]\t");
-                // SerialUSB.print("TYPE: ");
-                // SerialUSB.print(RxPkt.type, HEX);
-                // SerialUSB.print("\n\t");
                 updateEuler(&RxPkt);
             } else {
-                SerialUSB.print("[CRC FAIL] ");
-                SerialUSB.print("excepted: ");
-                SerialUSB.print(CRCReceived, HEX);
-                SerialUSB.print(", got: ");
-                SerialUSB.print(CRCCalculated, HEX);
-                SerialUSB.print("\n\t");
+                // SerialUSB.print("[IMU CRC FAIL] ");
+                // SerialUSB.print("excepted: ");
+                // SerialUSB.print(CRCReceived, HEX);
+                // SerialUSB.print(", got: ");
+                // SerialUSB.print(CRCCalculated, HEX);
+                // SerialUSB.print("\n\t");
             }
-
-            // SerialUSB.print("\nPACKET: ");
-
-            // for (int i = 0; i < 4; i++) {
-            //     SerialUSB.print(crc_header[i], HEX);
-            //     SerialUSB.print(" ");
-            // }
-
-            // SerialUSB.print(CRCReceived, HEX);
-            // SerialUSB.print(" ");
-            // SerialUSB.print("\n");
-
-            // for (int i = 0; i < RxPkt.payload_len; i++) {
-            //     SerialUSB.print(RxPkt.buf[i], HEX);
-            //     SerialUSB.print(" ");
-            // }
-
-            // SerialUSB.print("\n\n");
-
-            // SerialImu.flush();
 
             status = kStatus_Idle;
         }
@@ -202,32 +163,14 @@ void IMUSensor::init()
 void IMUSensor::update()
 {
     if (SerialImu.available()) {
-        // delay(5);
         while (SerialImu.available())
         {
             char ch = SerialImu.read();
             inst().packetDecode(ch);
         }
     }
-
-    if (inst().m_isUpdated) {
-        // SerialUSB.print(getYaw());
-        // SerialUSB.print("\t");
-        // SerialUSB.print(getRoll());
-        // SerialUSB.print("\t");
-        // SerialUSB.print(getPitch());
-        // SerialUSB.print("\t");
-    }
 }
-// void IMUSensor::commit(RovTelimetry & tel_)
-// {
-//     if (m_isUpdated) {
-//         tel_.yaw = getYaw();
-//         tel_.pitch = getPitch();
-//         tel_.roll = getRoll();
-//         m_isUpdated = false;
-//     }
-// }
+
 float IMUSensor::getPitch()
 {
     return inst().Eular[0];
