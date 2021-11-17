@@ -1,5 +1,4 @@
 #include "HighROV.h"
-#include "WiFiUpdater.h"
 #include "PWMController.h"
 #include "Networking.h"
 #include "Data.h"
@@ -8,52 +7,76 @@
 #include "DepthSensor.h"
 #include "Manipulator.h"
 #include "Config.h"
-#include "ImuSensor.h"
+#include "IMUSensor.h"
+#include "USB/USBAPI.h"
+#include "AnalogSensors.h"
 
-ImuSensor imu;
 rov::RovControl control;
 rov::RovTelimetry telimetry;
 
 void HighROV::init() {
-    Serial.println("HighROV init");
-    WiFiUpdater::init();
+    SerialUSB.println("HighROV init!");
+
+    pinMode(LED_BUILTIN, OUTPUT);
+    analogWrite(LED_BUILTIN, 100);
+
     PWMController::init();
     Networking::init();
     Thrusters::init();
     RotaryCameras::init();
     DepthSensor::init();
     Manipulator::init();
-    imu.init();
-    delay(7000);
+    IMUSensor::init();
+    AnalogSensors::init();
+
+    delay(3000);
 }
 
 void debug(rov::RovControl &ctrl) {
-    using namespace config::pwm;
-    PWMController::set_thruster(left_front_horizontal_ch, ctrl.thrusterPower[0]);
-    PWMController::set_thruster(right_front_horizontal_ch, ctrl.thrusterPower[1]);
-    PWMController::set_thruster(left_back_horizontal_ch, ctrl.thrusterPower[2]);
-    PWMController::set_thruster(right_back_horizontal_ch, ctrl.thrusterPower[3]);
-    PWMController::set_thruster(front_vertical_ch, ctrl.thrusterPower[4]);
-    PWMController::set_thruster(back_vertical_ch, ctrl.thrusterPower[5]);
+    using namespace config;
+
+    PWMController::set_thruster(thrusters::horizontal_front_left,  ctrl.thrusterPower[0]);
+    PWMController::set_thruster(thrusters::horizontal_front_right, ctrl.thrusterPower[1]);
+    PWMController::set_thruster(thrusters::horizontal_back_left,   ctrl.thrusterPower[2]);
+    PWMController::set_thruster(thrusters::horizontal_back_right,  ctrl.thrusterPower[3]);
+    PWMController::set_thruster(thrusters::vertical_front,         ctrl.thrusterPower[4]);
+    PWMController::set_thruster(thrusters::vertical_back,          ctrl.thrusterPower[5]);
+
+    PWMController::set_servo_power(servos::front,  ctrl.thrusterPower[6]);
+    PWMController::set_servo_power(servos::back,   ctrl.thrusterPower[7]);
+    PWMController::set_servo_power(servos::pwm_a2, ctrl.thrusterPower[8]);
+    PWMController::set_servo_power(servos::pwm_a3, ctrl.thrusterPower[9]);
 }
 
+void HighROV::run() {
+    AnalogSensors::update();
 
-void HighROV::run() {  
-    WiFiUpdater::check_updates();
+    telimetry.yaw = IMUSensor::getYaw();
+    telimetry.roll = IMUSensor::getRoll();
+    telimetry.pitch = IMUSensor::getPitch();
+    telimetry.depth = DepthSensor::getDepth();
+    telimetry.temperature = DepthSensor::getTemp();
+    telimetry.ammeter = AnalogSensors::getAmperage();
+    telimetry.voltmeter = AnalogSensors::getVoltage();
+    telimetry.cameraIndex = RotaryCameras::get_cam_index();
+
     Networking::read_write_udp(telimetry, control);
     if (!control.debugFlag) {
         Thrusters::update_thrusters(control, telimetry);
-        RotaryCameras::set_angle(0, constrain(control.cameraRotation[0], -1, 1));
-        RotaryCameras::set_angle(1, constrain(control.cameraRotation[1], -1, 1));
+        RotaryCameras::set_angle(config::servos::front, constrain(control.cameraRotation[0], -1, 1) * 3.0);
+        RotaryCameras::set_angle(config::servos::back,  constrain(control.cameraRotation[1], -1, 1) * 3.0);
+        RotaryCameras::select_cam(control.cameraIndex == 1 ? true : false);
         Manipulator::set_power(control.manipulatorRotation, control.manipulatorOpenClose);
     } else {
         debug(control);
     }
 
-    telimetry.depth = DepthSensor::get_depth();
+    if (DepthSensor::getUpdateStatus() == true) {
+        analogWrite(LED_BUILTIN, sin(millis() * 0.01) * 127 + 127);
+    } else {
+        analogWrite(LED_BUILTIN, 255);
+    }
 
-    imu.processImu();
-    telimetry.yaw = imu.get_yaw();
-    telimetry.roll = imu.get_roll();
-    telimetry.pitch = imu.get_pitch();
+    delay(20);
 }
+
