@@ -60,6 +60,15 @@ void HighROV::run() {
     telimetry.voltmeter = AnalogSensors::getVoltage();
     telimetry.cameraIndex = RotaryCameras::get_cam_index();
 
+    // SerialUSB.print("\tDepth: "); SerialUSB.print(telimetry.depth);
+    // SerialUSB.print("\tTemp: "); SerialUSB.print(telimetry.temperature);
+    // delay(50);
+
+    // // SerialUSB.print("\tYaw: "); SerialUSB.print(telimetry.yaw);
+    // // SerialUSB.print("\tRoll: "); SerialUSB.print(telimetry.roll);
+    // // SerialUSB.print("\tPitch: "); SerialUSB.print(telimetry.pitch);
+    // SerialUSB.println();
+
     Networking::read_write_udp(telimetry, control);
     if (!control.debugFlag) {
         Thrusters::update_thrusters(control, telimetry);

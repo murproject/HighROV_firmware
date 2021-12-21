@@ -122,6 +122,8 @@ namespace rov {
             } else if (version == 2) {
                 return fromRovControlMsgV2(msg, size);
             }
+
+            // return fromRovControlMsgV2(msg, size);
         }
 
         RovControlErrorCode fromRovControlMsgV1(const uint8_t *msg, unsigned long size) {
