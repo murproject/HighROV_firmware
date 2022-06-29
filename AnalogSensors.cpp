@@ -4,7 +4,8 @@
 
 void AnalogSensors::init() {
     using namespace config::analog;
-    auto &sensors = inst();
+    SerialUSB.println("Analog sensors init");
+    auto &sensors = inst();  
 
     pinMode(voltmeter_pin, INPUT);
     pinMode(ammeter_pin, INPUT);

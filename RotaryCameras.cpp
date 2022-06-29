@@ -3,6 +3,7 @@
 #include "PWMController.h"
 
 void RotaryCameras::init() {
+  SerialUSB.println("Rotary cameras init");
     auto &data = inst();
     PWMController::set_servo_angle(config::servos::front, data.angles[0]);
     PWMController::set_servo_angle(config::servos::back, data.angles[1]);

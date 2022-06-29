@@ -3,11 +3,23 @@
 
 void Networking::init() {
     Ethernet.init(config::networking::cs_pin);
-    Ethernet.begin(inst().mac, inst().m_self_ip);
+    if (Ethernet.hardwareStatus() == EthernetNoHardware) {
+      SerialUSB.println("Ethernet controller was not found. This usually indicates big problems");
+    }
+    else if (Ethernet.hardwareStatus() == EthernetW5100) {
+      SerialUSB.println("W5100 Ethernet controller detected.");
+    }
+    else if (Ethernet.hardwareStatus() == EthernetW5200) {
+      SerialUSB.println("W5200 Ethernet controller detected.");
+    }
+    else if (Ethernet.hardwareStatus() == EthernetW5500) {
+      SerialUSB.println("W5500 Ethernet controller detected.");
+    }
+    SerialUSB.println(Ethernet.begin(inst().mac)==1 ? "Ethernet init success" : "Ethernet init failed");
     inst().Udp.begin(inst().m_self_port);
 }
 
-void Networking::read_write_udp(rov::RovTelimetry &tel, rov::RovControl &ctrl) {
+void Networking::read_write_udp(rov::RovTelemetry &tel, rov::RovControl &ctrl) {
     static unsigned long lastTimestamp = 0;
     static constexpr size_t buffer_size = 128;
 
@@ -70,5 +82,3 @@ Networking::Networking() {
     m_remote_ip = IPAddress(rp[0], rp[1], rp[2], rp[3]);
     m_remote_port = config::networking::remote_port;
 }
-
-

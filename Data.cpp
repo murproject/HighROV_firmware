@@ -33,7 +33,7 @@ void rov::prvt::swap_endian_for(RovControl & rc) {
     rc.cameraIndex = swap_endian(rc.cameraIndex);
 }
 
-void rov::prvt::swap_endian_for(RovTelimetry & rt) {
+void rov::prvt::swap_endian_for(RovTelemetry & rt) {
     rt.yaw = swap_endian(rt.yaw);
     rt.pitch = swap_endian(rt.pitch);
     rt.roll = swap_endian(rt.roll);

@@ -218,3 +218,6 @@ __vm\*
 Debug/*
 *.xml
 __vm/Upload.vmps.xml
+
+#VSCode/VSCodium
+.vscode

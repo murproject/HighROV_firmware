@@ -4,6 +4,7 @@
 
 void Manipulator::init() {
     using namespace config::pwm;
+    SerialUSB.println("Manipulator init");
     PWMController::set_manipulator(manip_relese_ch, 0);
     PWMController::set_manipulator(manip_grab_ch, 0);
     PWMController::set_manipulator(manip_right_ch, 0);

@@ -1,8 +1,8 @@
 #pragma once
 
 #include <SPI.h>         // needed for Arduino versions later than 0018
-#include <Ethernet2.h>
-#include <EthernetUdp2.h>         // UDP library from: bjoern@cs.stanford.edu 12/30/2008
+#include <Ethernet.h>
+#include <EthernetUdp.h>
 #include "Data.h"
 
 class Networking
@@ -11,7 +11,7 @@ public:
     Networking();
 
     static void init();
-    static void read_write_udp(rov::RovTelimetry &tel, rov::RovControl &ctrl);
+    static void read_write_udp(rov::RovTelemetry &tel, rov::RovControl &ctrl);
 private:
     static Networking &inst();
     int read(uint8_t *buffer, int size);
@@ -29,4 +29,3 @@ private:
     IPAddress m_remote_ip;
     uint16_t m_remote_port;
 };
-

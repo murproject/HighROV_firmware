@@ -5,7 +5,7 @@
 
 void Thrusters::init() {
     using namespace config::thrusters;
-
+    SerialUSB.println("Thrusters init");
     PWMController::set_thruster(horizontal_front_left, 0);
     PWMController::set_thruster(horizontal_front_right, 0);
     PWMController::set_thruster(horizontal_back_left, 0);
@@ -16,7 +16,7 @@ void Thrusters::init() {
     PWMController::set_thruster(custom_1, 0);
 }
 
-void Thrusters::update_thrusters(rov::RovControl &ctrl, rov::RovTelimetry & tel) {
+void Thrusters::update_thrusters(rov::RovControl &ctrl, rov::RovTelemetry & tel) {
     using namespace config::thrusters;
     auto &data = inst();
 
@@ -31,6 +31,8 @@ void Thrusters::update_thrusters(rov::RovControl &ctrl, rov::RovTelimetry & tel)
         PWMController::set_thruster(horizontal_back_left,   constrain(data.directions[2] * (y - x + w), -100, 100));
         PWMController::set_thruster(horizontal_back_right,  constrain(data.directions[3] * (y + x - w), -100, 100));
 
+        
+        SerialUSB.println(z);
         PWMController::set_thruster(vertical_front, constrain(data.directions[4] * z, -100, 100));
         PWMController::set_thruster(vertical_back,  constrain(data.directions[5] * z, -100, 100));
     }

@@ -6,7 +6,7 @@
 void PWMController::init() {
     using namespace config::pwm;
     using namespace config;
-
+    SerialUSB.println("PWM controller init");
     auto &pwm = inst();
 
     /* SAMD ISR Servos init */
@@ -100,4 +100,3 @@ PWMController & PWMController::inst() {
 PWMController::PWMController() {
 
 }
-

@@ -65,6 +65,7 @@ private:
 public:
     static IMUSensor &inst();
     IMUSensor();
+    static void end();
     static void init();
     static void update();
     static float getPitch();
@@ -75,4 +76,3 @@ public:
 
 
 #endif
-
