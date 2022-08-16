@@ -41,7 +41,7 @@ private:
         kItemEnd = 0xFF,
     } ItemID_t;
 
-    typedef struct {
+    typedef struct Packet_t {
         uint32_t ofs;
         uint8_t buf[IMU_MAX_PACKET_LEN] = {0};
         uint16_t payload_len;
