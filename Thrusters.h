@@ -11,5 +11,5 @@ public:
     static String status;
 private:
     static Thrusters &inst();
-    int directions[6] = { 1,1,1,-1,-1,1 };
+    int directions[6] = { 1,1,1,1,1,1 };
 };
