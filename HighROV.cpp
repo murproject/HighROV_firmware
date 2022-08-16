@@ -33,7 +33,7 @@ void HighROV::init() {
 	IMUSensor::init();
 	AnalogSensors::init();
 
-	delay(250);
+	delay(3000);
 }
 
 void debug(rov::RovControl &ctrl) {
