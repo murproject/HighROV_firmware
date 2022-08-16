@@ -20,37 +20,37 @@ uint16_t debug_type = 0x00000000;
 
 
 void HighROV::init() {
-		SerialUSB.println("HighROV init!");
+	SerialUSB.println("HighROV init!");
 
-		pinMode(LED_BUILTIN, OUTPUT);
-		analogWrite(LED_BUILTIN, 100);
+	pinMode(LED_BUILTIN, OUTPUT);
+	analogWrite(LED_BUILTIN, 100);
 
-		PWMController::init();
-		Networking::init();
-		Thrusters::init();
-		RotaryCameras::init();
-		DepthSensor::init();
-		Manipulator::init();
-		IMUSensor::init();
-		AnalogSensors::init();
+	PWMController::init();
+	Networking::init();
+	Thrusters::init();
+	RotaryCameras::init();
+	DepthSensor::init();
+	Manipulator::init();
+	IMUSensor::init();
+	AnalogSensors::init();
 
-		delay(3000);
+	delay(250);
 }
 
 void debug(rov::RovControl &ctrl) {
-		using namespace config;
+	using namespace config;
 
-		PWMController::set_thruster(thrusters::horizontal_front_left,  ctrl.thrusterPower[0]);
-		PWMController::set_thruster(thrusters::horizontal_front_right, ctrl.thrusterPower[1]);
-		PWMController::set_thruster(thrusters::horizontal_back_left,   ctrl.thrusterPower[2]);
-		PWMController::set_thruster(thrusters::horizontal_back_right,  ctrl.thrusterPower[3]);
-		PWMController::set_thruster(thrusters::vertical_front,         ctrl.thrusterPower[4]);
-		PWMController::set_thruster(thrusters::vertical_back,          ctrl.thrusterPower[5]);
+	PWMController::set_thruster(thrusters::horizontal_front_left,  ctrl.thrusterPower[0]);
+	PWMController::set_thruster(thrusters::horizontal_front_right, ctrl.thrusterPower[1]);
+	PWMController::set_thruster(thrusters::horizontal_back_left,   ctrl.thrusterPower[2]);
+	PWMController::set_thruster(thrusters::horizontal_back_right,  ctrl.thrusterPower[3]);
+	PWMController::set_thruster(thrusters::vertical_front,         ctrl.thrusterPower[4]);
+	PWMController::set_thruster(thrusters::vertical_back,          ctrl.thrusterPower[5]);
 
-		PWMController::set_servo_power(servos::front,  ctrl.thrusterPower[6]);
-		PWMController::set_servo_power(servos::back,   ctrl.thrusterPower[7]);
-		PWMController::set_servo_power(servos::pwm_a2, ctrl.thrusterPower[8]);
-		PWMController::set_servo_power(servos::pwm_a3, ctrl.thrusterPower[9]);
+	PWMController::set_servo_power(servos::front,  ctrl.thrusterPower[6]);
+	PWMController::set_servo_power(servos::back,   ctrl.thrusterPower[7]);
+	PWMController::set_servo_power(servos::pwm_a2, ctrl.thrusterPower[8]);
+	PWMController::set_servo_power(servos::pwm_a3, ctrl.thrusterPower[9]);
 }
 
 void gracefulReset(){
@@ -61,29 +61,29 @@ void gracefulReset(){
 }
 
 void debugMenu(){
-		SerialUSB.print("Debug menu:\n"\
-						"1 - analog sensors\n"\
-						"2 - depth sensor\n"\
-						"3 - IMU\n"\
-						"4 - manipulator\n"\
-						"5 - networking\n"\
-						"6 - thrusters\n"\
-						"7 - reset\n"\
-						"0 - exit\n"\
-						"Currently flags are: 0x");
-		SerialUSB.println(debug_type, BIN);
-		SerialUSB.print("Your choice: ");
-		while (!SerialUSB.available());
+	SerialUSB.print("Debug menu:\n"\
+					"1 - analog sensors\n"\
+					"2 - depth sensor\n"\
+					"3 - IMU\n"\
+					"4 - manipulator\n"\
+					"5 - networking\n"\
+					"6 - thrusters\n"\
+					"7 - reset\n"\
+					"0 - exit\n"\
+					"Currently flags are: 0x");
+	SerialUSB.println(debug_type, BIN);
+	SerialUSB.print("Your choice: ");
+	while (!SerialUSB.available());
 
-		String msg = SerialUSB.readString();
-		msg.trim();
-		int debug_curr = msg.toInt();
-		if(debug_curr==0) return;
-		if(debug_curr<0 || debug_curr>7){
-		SerialUSB.println("wrong input, please resend the input one number at a time");
-		}
-		debug_type = debug_type ^ (1 << (debug_curr - 1));
-		SerialUSB.println(debug_type);
+	String msg = SerialUSB.readString();
+	msg.trim();
+	int debug_curr = msg.toInt();
+	if(debug_curr==0) return;
+	if(debug_curr<0 || debug_curr>7){
+	SerialUSB.println("wrong input, please resend the input one number at a time");
+	}
+	debug_type = debug_type ^ (1 << (debug_curr - 1));
+	SerialUSB.println(debug_type);
 }
 
 void serialHandler(){  
@@ -97,7 +97,7 @@ void serialHandler(){
 		if(msg=="debug")
 			debugMenu();
 		else
-		SerialUSB.println("send \"reset\" for controller reset or \"debug\" for debug menu");
+		SerialUSB.println("Send \"reset\" for controller reset or \"debug\" for debug menu");
 	}
 }
 
