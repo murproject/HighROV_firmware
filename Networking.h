@@ -12,6 +12,7 @@ public:
 
     static void init();
     static void read_write_udp(rov::RovTelemetry &tel, rov::RovControl &ctrl);
+    static String status();
 private:
     static Networking &inst();
     int read(uint8_t *buffer, int size);

@@ -221,3 +221,7 @@ __vm/Upload.vmps.xml
 
 #VSCode/VSCodium
 .vscode
+
+#CLang language server and compiler settings file
+.clangd
+compile_commands.json
