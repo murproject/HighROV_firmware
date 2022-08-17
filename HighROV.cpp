@@ -172,4 +172,5 @@ void HighROV::run() {
 
 		debugHandler();
 
+		delay(5);
 }
