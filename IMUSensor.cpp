@@ -1,4 +1,3 @@
-﻿
 #include "IMUSensor.h"
 #include <Arduino.h>
 #include "wiring_private.h"
@@ -155,10 +154,14 @@ IMUSensor::IMUSensor()
 
 void IMUSensor::init()
 {
+    SerialUSB.println("IMU init");
     SerialImu.begin(115200);
     pinPeripheral(11, PIO_SERCOM);
     pinPeripheral(12, PIO_SERCOM);
     // SERIAL_BUFFER_SIZE
+}
+void IMUSensor::end(){
+  SerialImu.end();
 }
 void IMUSensor::update()
 {
@@ -193,4 +196,3 @@ IMUSensor & IMUSensor::inst() {
     static IMUSensor imu;
     return imu;
 }
-

@@ -14,7 +14,7 @@
 
 namespace rov {
     struct RovControl;
-    struct RovTelimetry;
+    struct RovTelemetry;
     struct RovHello;
 
     namespace prvt {
@@ -37,7 +37,7 @@ namespace rov {
 
         void swap_endian_for(RovControl &rc);
 
-        void swap_endian_for(RovTelimetry &rt);
+        void swap_endian_for(RovTelemetry &rt);
 
         void swap_endian_for(RovHello &rt);
     };
@@ -216,7 +216,7 @@ namespace rov {
     };
 
 
-    struct RovTelimetry {
+    struct RovTelemetry {
         const uint8_t header_telemetry = 0xAE; // only v2 or later
 
         // v1 begin
@@ -236,7 +236,7 @@ namespace rov {
 
         size_t toRovTelemetryMsgV1(uint8_t *msg) {
             size_t i = 0;
-            RovTelimetry rt = *this;
+            RovTelemetry rt = *this;
             prvt::swap_endian_for(rt);
 
             write_bytes(msg, i, rt.depth);
@@ -257,7 +257,7 @@ namespace rov {
 
         size_t toRovTelemetryMsgV2(uint8_t *msg) {
             size_t i = 0;
-            RovTelimetry rt = *this;
+            RovTelemetry rt = *this;
             prvt::swap_endian_for(rt);
             constexpr int8_t version = 2;
 

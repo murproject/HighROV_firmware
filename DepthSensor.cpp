@@ -4,6 +4,7 @@
 
 bool DepthSensor::init() {
     auto &ds = inst();
+    SerialUSB.println("Depth sensor init");
     bool ok = ds.sensor.init();
 
     if (!ok) {
