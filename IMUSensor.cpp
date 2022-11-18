@@ -1,4 +1,3 @@
-﻿
 #include "IMUSensor.h"
 #include <Arduino.h>
 #include "wiring_private.h"
@@ -193,4 +192,3 @@ IMUSensor & IMUSensor::inst() {
     static IMUSensor imu;
     return imu;
 }
-
