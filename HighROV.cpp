@@ -42,10 +42,10 @@ void debug(rov::RovControl &ctrl) {
     PWMController::set_thruster(thrusters::vertical_front,         ctrl.thrusterPower[4]);
     PWMController::set_thruster(thrusters::vertical_back,          ctrl.thrusterPower[5]);
 
-    PWMController::set_servo_power(servos::front,  ctrl.thrusterPower[6]);
-    PWMController::set_servo_power(servos::back,   ctrl.thrusterPower[7]);
-    PWMController::set_servo_power(servos::pwm_a2, ctrl.thrusterPower[8]);
-    PWMController::set_servo_power(servos::pwm_a3, ctrl.thrusterPower[9]);
+    PWMController::set_servo_power(servos::front,           ctrl.thrusterPower[6]);
+    PWMController::set_servo_power(servos::back,            ctrl.thrusterPower[7]);
+    PWMController::set_servo_power(servos::custom_pwm_a2,   ctrl.thrusterPower[8]);
+    PWMController::set_servo_power(servos::manip_grab,      ctrl.thrusterPower[9]);
 }
 
 void HighROV::run() {

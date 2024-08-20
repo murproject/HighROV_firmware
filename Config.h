@@ -29,11 +29,11 @@ namespace config {
         constexpr int pwm_custom_a3_pin = A3;
 
         /* manipulator PCA9536 channels */
-        constexpr int manip_grab_ch     = 0;
-        constexpr int manip_relese_ch   = 1;
+        constexpr int manip_left_ch     = 0;
+        constexpr int manip_right_ch    = 1;
+        constexpr int manip_grab_ch     = 2;
+        constexpr int manip_release_ch  = 3;
 
-        constexpr int manip_left_ch     = 2;
-        constexpr int manip_right_ch    = 3;
     }
 
     /* indices of thrusters (controlled by SAMD_ISR_SERVO) */
@@ -55,8 +55,8 @@ namespace config {
         enum servos {
             front = 0,
             back,
-            pwm_a2,
-            pwm_a3,
+            custom_pwm_a2,
+            manip_grab,
         };
     }
 

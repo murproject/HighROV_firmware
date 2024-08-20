@@ -36,13 +36,13 @@ void PWMController::init() {
 
     pwm.m_servos[config::servos::front].attach(servo_front_pin);
     pwm.m_servos[config::servos::back].attach(servo_back_pin);
-    pwm.m_servos[config::servos::pwm_a2].attach(pwm_custom_a2_pin);
-    pwm.m_servos[config::servos::pwm_a3].attach(pwm_custom_a3_pin);
+    pwm.m_servos[config::servos::custom_pwm_a2].attach(pwm_custom_a2_pin);
+    pwm.m_servos[config::servos::manip_grab].attach(pwm_custom_a3_pin);
 
     pwm.m_servos[config::servos::front].writeMicroseconds(pulse_med);
     pwm.m_servos[config::servos::back].writeMicroseconds(pulse_med);
-    pwm.m_servos[config::servos::pwm_a2].writeMicroseconds(pulse_med);
-    pwm.m_servos[config::servos::pwm_a3].writeMicroseconds(pulse_med);
+    pwm.m_servos[config::servos::custom_pwm_a2].writeMicroseconds(pulse_med);
+    pwm.m_servos[config::servos::manip_grab].writeMicroseconds(pulse_med);
 
     /* I2C PCA init */
 
